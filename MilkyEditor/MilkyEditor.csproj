@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C8C5418-0C9E-44F9-B8B9-305B4B46B4EB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MilkyEditor</RootNamespace>
+    <AssemblyName>MilkyEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\..\..\..\Downloads\DouBOL-Dash-master\DouBOL-Dash-master\DouBOLDash\bin\Debug\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.Compatibility">
+      <HintPath>..\..\..\..\..\Downloads\DouBOL-Dash-master\DouBOL-Dash-master\DouBOLDash\bin\Debug\OpenTK.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl">
+      <HintPath>..\..\..\..\..\Downloads\DouBOL-Dash-master\DouBOL-Dash-master\DouBOLDash\bin\Debug\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Format\Bcsv.cs" />
+    <Compile Include="Format\BigEndianRW.cs" />
+    <Compile Include="Rendering\Bmd.cs" />
+    <Compile Include="Rendering\BmdRenderer.cs" />
+    <Compile Include="Rendering\ColorCubeRenderer.cs" />
+    <Compile Include="EditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorWindow.Designer.cs">
+      <DependentUpon>EditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Format\ExternalFilesystem.cs" />
+    <Compile Include="Format\FilesystemBase.cs" />
+    <Compile Include="BCSVEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BCSVEditorForm.Designer.cs">
+      <DependentUpon>BCSVEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GalaxyObjects\Camera.cs" />
+    <Compile Include="GalaxyObjects\Demo.cs" />
+    <Compile Include="GalaxyObjects\LevelObject.cs" />
+    <Compile Include="GalaxyObjects\Light.cs" />
+    <Compile Include="GalaxyObjects\MapParts.cs" />
+    <Compile Include="GalaxyObjects\PathObject.cs" />
+    <Compile Include="GalaxyObjects\PathPoint.cs" />
+    <Compile Include="GalaxyObjects\Scenario.cs" />
+    <Compile Include="GalaxyObjects\StartObject.cs" />
+    <Compile Include="GalaxyObjects\UseResource.cs" />
+    <Compile Include="GalaxyObjects\Zone.cs" />
+    <Compile Include="HashGen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HashGen.Designer.cs">
+      <DependentUpon>HashGen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\Helper.cs" />
+    <Compile Include="Rendering\ObjectModelSubstitution.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Format\RarcFilesystem.cs" />
+    <Compile Include="Rendering\RendererBase.cs" />
+    <Compile Include="Format\Yaz0.cs" />
+    <Compile Include="Format\Yaz0Stream.cs" />
+    <EmbeddedResource Include="BCSVEditorForm.resx">
+      <DependentUpon>BCSVEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorWIndow.resx">
+      <DependentUpon>EditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HashGen.resx">
+      <DependentUpon>HashGen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

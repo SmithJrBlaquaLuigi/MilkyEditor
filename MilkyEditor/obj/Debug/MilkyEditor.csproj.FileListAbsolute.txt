@@ -1,0 +1,25 @@
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe.config
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.pdb
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.Compatibility.dll
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.dll
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.dll
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csprojResolveAssemblyReference.cache
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.Properties.Resources.resources
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.GenerateResource.Cache
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.exe
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.pdb
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.BCSVEditorForm.resources
+c:\users\joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.EditorWindow.resources
+C:\Users\Joshua\documents\visual studio 2015\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.HashGen.resources
+C:\Users\Joshua\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe.config
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.exe
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.pdb
+C:\Users\Joshua\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe
+C:\Users\Joshua\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.pdb
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csprojResolveAssemblyReference.cache
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.BCSVEditorForm.resources
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.EditorWindow.resources
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.HashGen.resources
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.Properties.Resources.resources
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.GenerateResource.Cache
