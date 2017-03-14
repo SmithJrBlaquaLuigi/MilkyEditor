@@ -32,7 +32,7 @@ namespace MilkyEditor
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new EditorWindow());
+            Application.Run(new MainWindow());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MilkyEditor.GalaxyObjects
     {
         public string name, layer, zone;
         public int obj_arg0, obj_arg1, obj_arg2, obj_arg3, obj_arg4, obj_arg5, obj_arg6, obj_arg7, id;
-        public int cameraSetID, sw_appear, sw_dead, sw_a, sw_b, sw_awake, sw_param, messageID, castID, viewGroupID;
+        public int cameraSetID, sw_appear, sw_dead, sw_a, sw_b, sw_awake, sw_param, sw_sleep, messageID, castID, viewGroupID;
         public float x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, paramScale;
         public short shapeModelNo, commonPathID, clipGroupID, groupID, demoGroupID, mapPartsID, objID, generatorID;
 
@@ -139,6 +139,13 @@ namespace MilkyEditor.GalaxyObjects
         {
             get { return sw_param; }
             set { sw_param = value; }
+        }
+
+        [DisplayName("Sleep Switch"), Category("Events"), Description("SMG1 only.")]
+        public int SWSLEEP
+        {
+            get { return sw_sleep; }
+            set { sw_sleep = value; }
         }
 
         [DisplayName("Position X"), Category("Position"), Description("X position of the object.")]

@@ -23,3 +23,4 @@ C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.EditorWindow.resou
 C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.HashGen.resources
 C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.Properties.Resources.resources
 C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.GenerateResource.Cache
+C:\Users\Joshua\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.MainWindow.resources

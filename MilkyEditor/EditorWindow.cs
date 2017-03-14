@@ -32,11 +32,6 @@ namespace MilkyEditor
         public EditorWindow()
         {
             InitializeComponent();
-
-            if (Properties.Settings.Default.baseFolder == "")
-            {
-                setupFolder();
-            }
         }
 
         private RarcFilesystem archive_zones = null;
@@ -44,23 +39,12 @@ namespace MilkyEditor
         private Bcsv bcsv_zones_info = null;
         private Bcsv bcsv_zones = null;
 
-        public void setupFolder()
-        {
-            FolderBrowserDialog fldrDialog = new FolderBrowserDialog();
-
-            if (fldrDialog.ShowDialog() == DialogResult.OK)
-            {
-                Properties.Settings.Default.baseFolder = fldrDialog.SelectedPath;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         /// <summary>
         /// Loads the galaxy and fills the lists, as well as setting up the GL
         /// </summary>
         /// <param name="path">Level name</param>
         /// <param name="layer">The layer to load. Default is Common</param>
-        public void loadGalaxy(string level_path, string layer)
+        public void loadGalaxy(string level_path, string layer, bool isZone)
         {
             ///////////////////
             /// Variables
@@ -73,23 +57,47 @@ namespace MilkyEditor
 
             Dictionary<string, Zone> zones = new Dictionary<string, Zone>();
 
-            // BaseFolder/StageData/Level/LevelMap.arc
-            string new_path_map = "/StageData/" + path + "/" + path + "Map.arc";
-            // BaseFolder/StageData/Level/LevelLight.arc
-            string new_path_light = "/StageData/" + path + "/" + path + "Light.arc";
-            // BaseFolder/StageData/Level/LevelScenario.arc
-            string new_path_scenario = "/StageData/" + path + "/" + path + "Scenario.arc";
+            Program.GameArchive = new ExternalFilesystem(Properties.Settings.Default.baseFolder);
+
+            string new_path_map = "";
+            string new_path_scenario = "";
+            string new_path_light = "";
+
+            if (Program.GameVersion == SMGVersion.SMG1)
+            {
+                // BaseFolder/StageData/LevelMap.arc
+                new_path_map = "/StageData/" + path + ".arc";
+
+                // BaseFolder/StageData/Level/LevelScenario.arc
+                new_path_scenario = "/StageData/" + path + "/" + path + "Scenario.arc";
+
+                Console.WriteLine(new_path_map);
+
+                if (!File.Exists(Properties.Settings.Default.baseFolder + "/StageData/" + path + ".arc"))
+                {
+                    MessageBox.Show("Fatal error -- map doesn't have a map file. Aborting.");
+                    return;
+                }
+            }
+            else
+            {
+                // BaseFolder/StageData/Level/LevelMap.arc
+                new_path_map = "/StageData/" + path + "/" + path + "Map.arc";
+                // BaseFolder/StageData/Level/LevelLight.arc
+                new_path_light = "/StageData/" + path + "/" + path + "Light.arc";
+                // BaseFolder/StageData/Level/LevelScenario.arc
+                new_path_scenario = "/StageData/" + path + "/" + path + "Scenario.arc";
+
+                if (!File.Exists(Properties.Settings.Default.baseFolder + "/StageData/" + path + "/" + path + "Map.arc"))
+                {
+                    MessageBox.Show("Fatal error -- map doesn't have a Map.arc file. Aborting.");
+                    return;
+                }
+            }
 
             ///////////////////
             /// Map Loading
             ///////////////////
-            Program.GameArchive = new ExternalFilesystem(Properties.Settings.Default.baseFolder);
-
-            if (!File.Exists(Properties.Settings.Default.baseFolder + "/StageData/" + path + "/" + path + "Map.arc"))
-            {
-                MessageBox.Show("Fatal error -- map doesn't have a Map.arc file. Aborting.");
-                return;
-            }
 
             arc_map = new RarcFilesystem(Program.GameArchive.OpenFile(new_path_map));
 
@@ -155,7 +163,9 @@ namespace MilkyEditor
                     scenario_data.appearStarObj = (string)entry["AppearPowerStarObj"];
                     scenario_data.comet = (string)entry["Comet"];
                     scenario_data.timer = (int)entry["LuigiModeTimer"];
-                    scenario_data.powerStarType = (string)entry["PowerStarType"];
+
+                    if (Program.GameVersion == SMGVersion.SMG2)
+                        scenario_data.powerStarType = (string)entry["PowerStarType"];
 
                     TreeNode scenarioNode = new TreeNode("[" + scenario_data.scenarioNo + "] " + name);
                     scenarioNode.Tag = scenario_data;
@@ -210,14 +220,23 @@ namespace MilkyEditor
                     obj.sw_dead = (int)entry["SW_DEAD"];
                     obj.sw_a = (int)entry["SW_A"];
                     obj.sw_b = (int)entry["SW_B"];
-                    obj.sw_awake = (int)entry["SW_AWAKE"];
-                    obj.sw_param = (int)entry["SW_PARAM"];
+
+                    if (Program.GameVersion == SMGVersion.SMG1)
+                    {
+                        obj.sw_sleep = (int)entry["SW_SLEEP"];
+                    }
+                    else
+                    {
+                        obj.sw_awake = (int)entry["SW_AWAKE"];
+                        obj.sw_param = (int)entry["SW_PARAM"];
+                    }
 
                     // Message
                     obj.messageID = (int)entry["MessageId"];
 
                     // ParamScale
-                    obj.paramScale = (float)entry["ParamScale"];
+                    if (Program.GameVersion == SMGVersion.SMG2)
+                        obj.paramScale = (float)entry["ParamScale"];
 
                     // Translate, Rotate, Scale
                     obj.x = (float)entry["pos_x"];
@@ -243,8 +262,12 @@ namespace MilkyEditor
                     obj.groupID = (short)entry["GroupId"];
                     obj.demoGroupID = (short)entry["DemoGroupId"];
                     obj.mapPartsID = (short)entry["MapParts_ID"];
-                    obj.objID = (short)entry["Obj_ID"];
-                    obj.generatorID = (short)entry["GeneratorID"];
+
+                    if (Program.GameVersion == SMGVersion.SMG2)
+                    {
+                        obj.objID = (short)entry["Obj_ID"];
+                        obj.generatorID = (short)entry["GeneratorID"];
+                    }
 
                     objects.Add(obj);
                 }
@@ -321,8 +344,9 @@ namespace MilkyEditor
                 if (obj.zone == "")
                     obj.zone = path;
 
-                if (obj.layer == layer || obj.layer == "Common")
+                if (obj.layer == layer || obj.layer == layer.ToLower() || obj.layer == "Common" || obj.layer == "common")
                 {
+
                     TreeNode objNode = new TreeNode(obj.name + " [" + obj.layer + "]");
                     objNode.Tag = obj;
 
@@ -517,7 +541,10 @@ namespace MilkyEditor
                     zone.rotY = (float)zone_entry["dir_y"];
                     zone.rotZ = (float)zone_entry["dir_z"];
 
-                    archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
+                    if (Program.GameVersion == SMGVersion.SMG1)
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + ".arc"));
+                    else
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
 
                     if (archive_zones.DirectoryExists("/Stage/jmp/Placement/" + layer))
                         bcsv_zones = new Bcsv(archive_zones.OpenFile("/Stage/jmp/Placement/" + layer + "/ObjInfo"));
@@ -556,19 +583,22 @@ namespace MilkyEditor
                         // Camera
                         obj.cameraSetID = (int)entry["CameraSetId"];
 
-                        // Events / SWitch
-                        obj.sw_appear = (int)entry["SW_APPEAR"];
-                        obj.sw_dead = (int)entry["SW_DEAD"];
-                        obj.sw_a = (int)entry["SW_A"];
-                        obj.sw_b = (int)entry["SW_B"];
-                        obj.sw_awake = (int)entry["SW_AWAKE"];
-                        obj.sw_param = (int)entry["SW_PARAM"];
+                        if (Program.GameVersion == SMGVersion.SMG1)
+                        {
+                            obj.sw_sleep = (int)entry["SW_SLEEP"];
+                        }
+                        else
+                        {
+                            obj.sw_awake = (int)entry["SW_AWAKE"];
+                            obj.sw_param = (int)entry["SW_PARAM"];
+                        }
 
                         // Message
                         obj.messageID = (int)entry["MessageId"];
 
                         // ParamScale
-                        obj.paramScale = (float)entry["ParamScale"];
+                        if (Program.GameVersion == SMGVersion.SMG2)
+                            obj.paramScale = (float)entry["ParamScale"];
 
                         // Translate, Rotate, Scale
                         obj.x = (float)entry["pos_x"] + zone.x;
@@ -594,8 +624,12 @@ namespace MilkyEditor
                         obj.groupID = (short)entry["GroupId"];
                         obj.demoGroupID = (short)entry["DemoGroupId"];
                         obj.mapPartsID = (short)entry["MapParts_ID"];
-                        obj.objID = (short)entry["Obj_ID"];
-                        obj.generatorID = (short)entry["GeneratorID"];
+
+                        if (Program.GameVersion == SMGVersion.SMG2)
+                        {
+                            obj.objID = (short)entry["Obj_ID"];
+                            obj.generatorID = (short)entry["GeneratorID"];
+                        }
 
                         objects.Add(obj);
                     }
@@ -629,7 +663,10 @@ namespace MilkyEditor
                     zone.rotY = (float)zone_entry["dir_y"];
                     zone.rotZ = (float)zone_entry["dir_z"];
 
-                    archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
+                    if (Program.GameVersion == SMGVersion.SMG1)
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + ".arc"));
+                    else
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
 
                     if (archive_zones.DirectoryExists("/Stage/jmp/Start/" + layer))
                         bcsv_zones = new Bcsv(archive_zones.OpenFile("/Stage/jmp/Start/" + layer + "/StartInfo"));
@@ -689,7 +726,11 @@ namespace MilkyEditor
                     zone.rotY = (float)zone_entry["dir_y"];
                     zone.rotZ = (float)zone_entry["dir_z"];
 
-                    archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
+                    if (Program.GameVersion == SMGVersion.SMG1)
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + ".arc"));
+                    else
+                        archive_zones = new RarcFilesystem(Program.GameArchive.OpenFile("/StageData/" + zone.name + "/" + zone.name + "Map.arc"));
+
 
                     if (archive_zones.DirectoryExists("/Stage/jmp/MapParts/" + layer))
                         bcsv_zones = new Bcsv(archive_zones.OpenFile("/Stage/jmp/MapParts/" + layer + "/MapPartsInfo"));
@@ -854,7 +895,7 @@ namespace MilkyEditor
 
                 string path = galaxyFolderDlg.SelectedPath;
 
-                loadGalaxy(Path.GetFileName(path), "LayerA");
+                loadGalaxy(Path.GetFileName(path), "LayerA", false);
             }
         }
 

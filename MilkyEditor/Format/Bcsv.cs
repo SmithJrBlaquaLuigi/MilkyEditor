@@ -390,6 +390,7 @@ namespace MilkyEditor
             "SW_DEAD",
             "SW_AWAKE",
             "SW_PARAM",
+            "SW_SLEEP",
             "MessageId",
             "CameraSetId",
             "ViewGroupId",
