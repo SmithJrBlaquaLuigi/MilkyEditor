@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using MilkyEditor.Filesystem;
 
 namespace MilkyEditor
 {
@@ -16,121 +18,128 @@ namespace MilkyEditor
         {
             InitializeComponent();
 
-            if (Properties.Settings.Default.baseFolder == "")
-                setupFolders();
-
-            setupTree();
+            Bcsv.PopulateHashtable();
         }
 
-        public void setupTree()
+        private void selectFolderButton_Click(object sender, EventArgs e)
         {
-            galaxyList.Nodes.Clear();
+            FolderBrowserDialog selectFolderDialog = new FolderBrowserDialog();
+            selectFolderDialog.Description = "Select the game folder containing your SMG files";
+            // storing the missing folders in a string
+            string missingFolders = "";
 
-            Program.GameArchive = new ExternalFilesystem(Properties.Settings.Default.baseFolder);
-
-            if (Program.GameArchive.GetFiles("/StageData").Length == 0)
-                Program.GameVersion = SMGVersion.SMG2;
-            else
-                Program.GameVersion = SMGVersion.SMG1;
-
-            string[] leveldirs = Program.GameArchive.GetDirectories("/StageData");
-            if (Program.GameVersion == SMGVersion.SMG1)
+            if (selectFolderDialog.ShowDialog() == DialogResult.OK)
             {
-                foreach (string level in leveldirs)
+                // sanity checks
+                if (!Directory.Exists(selectFolderDialog.SelectedPath + "/StageData"))
+                    missingFolders += "/StageData\n";
+                if (!Directory.Exists(selectFolderDialog.SelectedPath + "/ObjectData"))
+                    missingFolders += "/ObjectData\n";
+
+                // folders are missing, throw "error" and stop the process
+                if (missingFolders != "")
                 {
-                    TreeNode levelNode = new TreeNode(level);
+                    MessageBox.Show("The path you selected is missing the following folders: \n" + missingFolders);
+                    return;
+                }
 
-                    galaxyList.Nodes.Add(levelNode);
+                chosenFolderPath = selectFolderDialog.SelectedPath;
 
-                    string scenario_filename = string.Format("/StageData/{0}/{0}Scenario.arc", level);
-                    RarcFilesystem scenario_arc = new RarcFilesystem(Program.GameArchive.OpenFile(scenario_filename));
-                    Bcsv zonelist = new Bcsv(scenario_arc.OpenFile("/" + level + "Scenario/ZoneList.bcsv"));
+                fillTreeNodes();
+            }
+        }
 
-                    // TODO: remove that
-                    foreach (Bcsv.Entry entry in zonelist.Entries)
+        private void fillTreeNodes()
+        {
+            /*
+             * Filling the tree nodes requires a few steps
+             * Find the folders with ___Galaxy at the end
+             * Open up the map file, and read the stage information
+             * Get zones used, and then add them as child nodes
+             */
+            gameFilesystem = new ExternalFilesystem(chosenFolderPath);
+
+            // now we get the directories
+            string[] galaxyNames = gameFilesystem.GetDirectories("/StageData");
+
+            foreach(string galaxyName in galaxyNames)
+            {
+                // now we need to check if it's a used galaxy (just check for a scenario file)
+                string scenarioName = String.Format("/StageData/{0}/{1}", galaxyName, galaxyName+"Scenario.arc");
+
+                // means it's a galaxy, let's open the map file
+                if (gameFilesystem.FileExists(scenarioName))
+                {
+                    // add the root node
+                    TreeNode galaxyNode = new TreeNode(galaxyName);
+                    galaxyNode.Tag = galaxyName;
+                    galaxyListTree.Nodes.Add(galaxyNode);
+
+                    // now we open the scenario file
+                    RarcFilesystem scenarioFile = new RarcFilesystem(gameFilesystem.OpenFile(scenarioName));
+
+                    // build the path
+                    string zoneListPath = String.Format("/{0}Scenario/ZoneList.bcsv", galaxyName);
+
+                    // get ZoneList.bcsv from the galaxy
+                    Bcsv zoneListInfoFile = new Bcsv(scenarioFile.OpenFile(zoneListPath));
+
+                    // go through each entry in the bcsv, when each one represents the zones
+                    foreach(Bcsv.Entry entry in zoneListInfoFile.Entries)
                     {
-                        string zonename = (string)entry["ZoneName"];
-                        levelNode.Nodes.Add(zonename).Tag = "Z|" + zonename;
+                        TreeNode stageNode = new TreeNode((string)entry["ZoneName"]);
+                        stageNode.Tag = (string)entry["ZoneName"];
 
-                        Bcsv.AddHash(zonename);
+                        galaxyNode.Nodes.Add(stageNode);
                     }
 
-                    galaxyList.Nodes.Add(level);
-
-                    zonelist.Close();
-                    scenario_arc.Close();
+                    // finshed with the file, close it
+                    // also close the scenario file (will cause issues if not closed)
+                    scenarioFile.Close();
+                    zoneListInfoFile.Close();
                 }
             }
-            else
+
+            gameFilesystem.Close();
+        }
+
+        string chosenFolderPath;
+
+        private void galaxyListTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (galaxyListTree.SelectedNode.Parent != null)
             {
-                foreach (string level in leveldirs)
-                {
-                    if (level.EndsWith("Zone") || level.Contains("E3") || level.Contains("Test"))
-                        continue;
+                bool isZone = false;
+                if (galaxyListTree.SelectedNode.Index == 0)
+                    isZone = false;
+                else
+                    isZone = true;
 
-                    try
-                    {
-                        string scenario_filename = string.Format("/StageData/{0}/{0}Scenario.arc", level);
-                        RarcFilesystem scenario_arc = new RarcFilesystem(Program.GameArchive.OpenFile(scenario_filename));
-                        Bcsv zonelist = new Bcsv(scenario_arc.OpenFile("/" + level + "Scenario/ZoneList.bcsv"));
-
-                        TreeNode levelNode = new TreeNode(level);
-
-                        galaxyList.Nodes.Add(levelNode);
-
-                        foreach (Bcsv.Entry entry in zonelist.Entries)
-                        {
-                            string zonename = (string)entry["ZoneName"];
-                            levelNode.Nodes.Add(zonename).Tag = "Z|" + zonename;
-
-                            Bcsv.AddHash(zonename);
-                        }
-
-                        zonelist.Close();
-                        scenario_arc.Close();
-                    }
-                    catch
-                    {
-                    }
-                }
+                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, isZone);
+                editorForm.Show();
             }
         }
 
-        public void setupFolders()
+        private void openGalaxyButton_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fldrDialog = new FolderBrowserDialog();
-
-            if (fldrDialog.ShowDialog() == DialogResult.OK)
+            if (galaxyListTree.SelectedNode.Parent != null)
             {
-                Properties.Settings.Default.baseFolder = fldrDialog.SelectedPath;
-                Properties.Settings.Default.Save();
-            }
+                bool isZone = false;
+                if (galaxyListTree.SelectedNode.Index == 0)
+                    isZone = false;
+                else
+                    isZone = true;
 
-            galaxyList.Nodes.Clear();
-            setupTree();
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            setupFolders();
-        }
-
-        private void galaxyList_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            // so the node up top doesn't open galaxies
-            if (galaxyList.SelectedNode.Parent != null)
-            {
-                EditorWindow window = new EditorWindow();
-                window.Show();
-
-                window.loadGalaxy(galaxyList.SelectedNode.Text, "LayerA", false);
+                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, isZone);
+                editorForm.Show();
             }
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void galaxyListTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            BCSVEditorForm form = new BCSVEditorForm();
-            form.Show();
+            openGalaxyButton.Enabled = true;
         }
+
+        ExternalFilesystem gameFilesystem;
     }
 }

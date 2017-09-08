@@ -30,61 +30,84 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.galaxyList = new System.Windows.Forms.TreeView();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.selectFolderButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.openGalaxyButton = new System.Windows.Forms.ToolStripButton();
+            this.bcsvEditorButton = new System.Windows.Forms.ToolStripButton();
+            this.galaxyListTree = new System.Windows.Forms.TreeView();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
+            this.selectFolderButton,
+            this.toolStripSeparator1,
+            this.openGalaxyButton,
+            this.bcsvEditorButton});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(477, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(493, 23);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // selectFolderButton
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(115, 22);
-            this.toolStripButton1.Text = "Select Galaxy Folder";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.selectFolderButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.selectFolderButton.Image = ((System.Drawing.Image)(resources.GetObject("selectFolderButton.Image")));
+            this.selectFolderButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.selectFolderButton.Name = "selectFolderButton";
+            this.selectFolderButton.Size = new System.Drawing.Size(112, 19);
+            this.selectFolderButton.Text = "Select Game Folder";
+            this.selectFolderButton.Click += new System.EventHandler(this.selectFolderButton_Click);
             // 
-            // galaxyList
+            // toolStripSeparator1
             // 
-            this.galaxyList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.galaxyList.Location = new System.Drawing.Point(0, 25);
-            this.galaxyList.Name = "galaxyList";
-            this.galaxyList.Size = new System.Drawing.Size(477, 362);
-            this.galaxyList.TabIndex = 1;
-            this.galaxyList.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.galaxyList_NodeMouseDoubleClick);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton2
+            // openGalaxyButton
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(73, 22);
-            this.toolStripButton2.Text = "BCSV Editor";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.openGalaxyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.openGalaxyButton.Enabled = false;
+            this.openGalaxyButton.Image = ((System.Drawing.Image)(resources.GetObject("openGalaxyButton.Image")));
+            this.openGalaxyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openGalaxyButton.Name = "openGalaxyButton";
+            this.openGalaxyButton.Size = new System.Drawing.Size(77, 22);
+            this.openGalaxyButton.Text = "Open Galaxy";
+            this.openGalaxyButton.Click += new System.EventHandler(this.openGalaxyButton_Click);
+            // 
+            // bcsvEditorButton
+            // 
+            this.bcsvEditorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.bcsvEditorButton.Enabled = false;
+            this.bcsvEditorButton.Image = ((System.Drawing.Image)(resources.GetObject("bcsvEditorButton.Image")));
+            this.bcsvEditorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bcsvEditorButton.Name = "bcsvEditorButton";
+            this.bcsvEditorButton.Size = new System.Drawing.Size(73, 22);
+            this.bcsvEditorButton.Text = "BCSV Editor";
+            // 
+            // galaxyListTree
+            // 
+            this.galaxyListTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.galaxyListTree.Location = new System.Drawing.Point(0, 23);
+            this.galaxyListTree.Name = "galaxyListTree";
+            this.galaxyListTree.Size = new System.Drawing.Size(493, 264);
+            this.galaxyListTree.TabIndex = 1;
+            this.galaxyListTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.galaxyListTree_NodeMouseClick);
+            this.galaxyListTree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.galaxyListTree_NodeMouseDoubleClick);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(477, 387);
-            this.Controls.Add(this.galaxyList);
+            this.ClientSize = new System.Drawing.Size(493, 287);
+            this.Controls.Add(this.galaxyListTree);
             this.Controls.Add(this.toolStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.Text = "Milky Editor v0.1";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -95,8 +118,11 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.TreeView galaxyList;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton selectFolderButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton bcsvEditorButton;
+        private System.Windows.Forms.TreeView galaxyListTree;
+        private System.Windows.Forms.ToolStripButton openGalaxyButton;
     }
 }
+

@@ -1,2 +1,2 @@
 # MilkyEditor
-An editor for Super Mario Galaxy 1 &amp; 2. This pretty much aims to not be Whitehole, really. The code for Whitehole is eh. There's still a lot to do, however.
+An editor mainly for Super Mario Galaxy 2 custom levels. Not yet finished, though. It supports Light and Scenario viewing, with no editing yet.

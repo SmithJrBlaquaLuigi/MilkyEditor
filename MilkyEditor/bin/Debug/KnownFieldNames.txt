@@ -1,4 +1,4 @@
-# .pa files (collision behaviors)
+﻿# .pa files (collision behaviors)
 camera_id
 Sound_code
 Floor_code
