@@ -11,20 +11,20 @@ namespace MilkyEditor.GalaxyObject
     {
         public Light()
         {
-            LightID = 0xFFFFFFFF;
+            LightID = -1;
             AreaLightName = "";
         }
 
         public Light(Bcsv.Entry entry, string name)
         {
            galaxyName = name;
-           LightID = Convert.ToUInt32(entry["LightID"]);
+           LightID = Convert.ToInt32(entry["LightID"]);
            AreaLightName = Convert.ToString(entry["AreaLightName"]);
         }
 
         public override string ToString() { return String.Format("[{0}] {1} ({2})", LightID, AreaLightName, galaxyName); }
 
-        public ulong LightID;
+        public int LightID;
         public string AreaLightName;
         public string galaxyName;
     }

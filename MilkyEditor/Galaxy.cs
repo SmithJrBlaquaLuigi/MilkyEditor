@@ -2,7 +2,6 @@
 using MilkyEditor.GalaxyObject;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,46 +9,37 @@ using System.Threading.Tasks;
 namespace MilkyEditor
 {
     class Galaxy
-    {
-        public Galaxy(string name, ExternalFilesystem gameFilesystem)
+    { 
+        public Galaxy(string galaxyName, List<string> layers, ExternalFilesystem gameFilesystem)
         {
-            galaxyName = name;
+            foreach (string layer in layers)
+                Console.WriteLine("Gotta load " + layer);
 
             /*
-             * Scenario structure
+             * Scenario data
              */
             string scenarioFile = String.Format("/StageData/{0}/{0}Scenario.arc", galaxyName);
             string scenarioInfoFile = String.Format("/{0}Scenario/ScenarioData.bcsv", galaxyName);
 
-            string mapFile = String.Format("/StageData/{0}/{0}Map.arc", galaxyName);
-            string designFile = String.Format("/StageData/{0}/{0}Design.arc", galaxyName);
-            string lightFile = String.Format("/StageData/{0}/{0}Light.arc", galaxyName);
-            string soundFile = String.Format("/StageData/{0}/{0}Sound.arc", galaxyName);
-
-            /*
-             * Scenario Data
-             */
+            // we open the archive and get the bcsv
             RarcFilesystem scenarioArchive = new RarcFilesystem(gameFilesystem.OpenFile(scenarioFile));
             Bcsv scenarioBcsv = new Bcsv(scenarioArchive.OpenFile(scenarioInfoFile));
-            scenario = new Scenario(scenarioBcsv);
+
+            // init the list
+            scenarios = new List<Scenario>();
+
+            // go through each entry and add it to the list of scenarios. this will be needed later
+            foreach (Bcsv.Entry entry in scenarioBcsv.Entries)
+                scenarios.Add(new Scenario(entry));
 
             scenarioArchive.Close();
             scenarioBcsv.Close();
 
+            // ===========================================================================================
             /*
-             * Getting the zones for reading the current layer's data (common)
+             * Light data
              */
-            RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
-            Bcsv stageObjBcsv = new Bcsv(mapArchive.OpenFile("/Stage/jmp/Placement/Common/StageObjInfo"));
-
-            zones = new List<Zone>();
-
-            // now we add each zone into the galaxy of the current selected layer
-            foreach (Bcsv.Entry entry in stageObjBcsv.Entries)
-                zones.Add(new Zone(Convert.ToString(entry["name"]), gameFilesystem));
-
-            mapArchive.Close();
-            stageObjBcsv.Close();
+            string lightFile = String.Format("/StageData/{0}/{0}Light.arc", galaxyName);
 
             if (gameFilesystem.FileExists(lightFile))
             {
@@ -57,21 +47,49 @@ namespace MilkyEditor
                 RarcFilesystem lightArchive = new RarcFilesystem(gameFilesystem.OpenFile(lightFile));
                 Bcsv lightBcsv = new Bcsv(lightArchive.OpenFile(lightBcsvFile));
 
-                lightData = new List<Light>();
+                lights = new List<Light>();
 
                 foreach (Bcsv.Entry entry in lightBcsv.Entries)
-                    lightData.Add(new Light(entry, galaxyName));
+                    lights.Add(new Light(entry, galaxyName));
 
                 lightArchive.Close();
                 lightBcsv.Close();
             }
 
+            // ===========================================================================================
+            /*
+             * Zone data
+             * The zone data is the first thing loaded that requires a loop through each used layer
+             */
+            string mapFile = String.Format("/StageData/{0}/{0}Map.arc", galaxyName);
+
+            zones = new List<Zone>();
+
+            foreach (string layer in layers)
+            {
+                string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
+
+                RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
+                Bcsv stageObjBcsv = new Bcsv(mapArchive.OpenFile(stageInfoFile));
+
+                foreach (Bcsv.Entry entry in stageObjBcsv.Entries)
+                    zones.Add(new Zone(Convert.ToString(entry["name"]), layer, gameFilesystem));
+
+                mapArchive.Close();
+                stageObjBcsv.Close();
+            }
+
+
             gameFilesystem.Close();
         }
 
-        string galaxyName;
-        public Scenario scenario;
+        public void Clear()
+        {
+
+        }
+
+        public List<Scenario> scenarios;
+        public List<Light> lights;
         public List<Zone> zones;
-        public List<Light> lightData;
     }
 }

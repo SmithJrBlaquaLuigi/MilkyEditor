@@ -54,7 +54,7 @@ namespace MilkyEditor.Filesystem
                     {
                         case 0:
                         case 3:
-                            val = (uint)((m_File.Reader.ReadUInt32() & field.Mask) >> field.ShiftAmount);
+                            val = (int)((m_File.Reader.ReadInt32() & field.Mask) >> field.ShiftAmount);
                             break;
 
                         case 4:
@@ -357,6 +357,6 @@ namespace MilkyEditor.Filesystem
             }
         }
 
-        public static Dictionary<uint, string> m_HashTable; 
+        public static Dictionary<uint, string> m_HashTable;
     }
 }

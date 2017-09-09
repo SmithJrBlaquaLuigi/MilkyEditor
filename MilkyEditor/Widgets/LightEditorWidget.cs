@@ -25,8 +25,8 @@ namespace MilkyEditor.Widgets
 
             lightID = new NumericUpDown
             {
-                Minimum = long.MinValue,
-                Maximum = long.MaxValue,
+                Minimum = int.MinValue,
+                Maximum = int.MaxValue,
                 Value = light.LightID
             };
             Controls.Add(lightID);

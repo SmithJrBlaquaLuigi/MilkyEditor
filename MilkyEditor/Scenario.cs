@@ -11,36 +11,32 @@ namespace MilkyEditor
     {
         public Scenario()
         {
-            entries = null;
+            ScenarioName = "Scenario";
+            ScenarioNo = 0;
+            PowerStarId = 0;
+            AppearPowerStarObj = "";
+            Comet = "";
+            CometLimitTimer = 0;
+            LuigiModeTimer = 0;
+            PowerStarType = "Normal";
         }
 
-        public Scenario(Bcsv bcsv)
+        public Scenario(Bcsv.Entry entry)
         {
-            entries = new List<ScenarioEntry>();
+            ScenarioEntry = entry; // for further use
 
-            foreach(Bcsv.Entry entry in bcsv.Entries)
-            {
-                ScenarioEntry scenario = new ScenarioEntry();
-                scenario.ScenarioName = Convert.ToString(entry["ScenarioName"]);
-                scenario.ScenarioNo = Convert.ToInt32(entry["ScenarioNo"]);
-                scenario.PowerStarId = Convert.ToInt32(entry["PowerStarId"]);
-                scenario.AppearPowerStarObj = Convert.ToString(entry["AppearPowerStarObj"]);
-                scenario.Comet = Convert.ToString(entry["Comet"]);
-                scenario.CometLimitTimer = Convert.ToInt32(entry["CometLimitTimer"]);
-                scenario.LuigiModeTimer = Convert.ToInt32(entry["LuigiModeTimer"]);
-                scenario.PowerStarType = Convert.ToString(entry["PowerStarType"]);
-
-                entries.Add(scenario);
-            }
-
-            bcsv.Close();
+            ScenarioName = Convert.ToString(entry["ScenarioName"]);
+            ScenarioNo = Convert.ToInt32(entry["ScenarioNo"]);
+            PowerStarId = Convert.ToInt32(entry["PowerStarId"]);
+            AppearPowerStarObj = Convert.ToString(entry["AppearPowerStarObj"]);
+            Comet = Convert.ToString(entry["Comet"]);
+            CometLimitTimer = Convert.ToInt32(entry["CometLimitTimer"]);
+            LuigiModeTimer = Convert.ToInt32(entry["LuigiModeTimer"]);
+            PowerStarType = Convert.ToString(entry["PowerStarType"]);
         }
 
-        public List<ScenarioEntry> entries;
-    }
+        public override string ToString() { return String.Format("[{0}] {1}", ScenarioNo, ScenarioName); }
 
-    struct ScenarioEntry
-    {
         public string ScenarioName;
         public int ScenarioNo;
         public int PowerStarId;
@@ -48,5 +44,6 @@ namespace MilkyEditor
         public int CometLimitTimer;
         public int LuigiModeTimer;
         public string PowerStarType;
+        public Bcsv.Entry ScenarioEntry;
     }
 }

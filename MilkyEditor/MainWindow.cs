@@ -23,8 +23,10 @@ namespace MilkyEditor
 
         private void selectFolderButton_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog selectFolderDialog = new FolderBrowserDialog();
-            selectFolderDialog.Description = "Select the game folder containing your SMG files";
+            FolderBrowserDialog selectFolderDialog = new FolderBrowserDialog
+            {
+                Description = "Select the game folder containing your SMG files"
+            };
             // storing the missing folders in a string
             string missingFolders = "";
 
@@ -45,11 +47,11 @@ namespace MilkyEditor
 
                 chosenFolderPath = selectFolderDialog.SelectedPath;
 
-                fillTreeNodes();
+                FillTreeNodes();
             }
         }
 
-        private void fillTreeNodes()
+        private void FillTreeNodes()
         {
             /*
              * Filling the tree nodes requires a few steps
@@ -65,14 +67,16 @@ namespace MilkyEditor
             foreach(string galaxyName in galaxyNames)
             {
                 // now we need to check if it's a used galaxy (just check for a scenario file)
-                string scenarioName = String.Format("/StageData/{0}/{1}", galaxyName, galaxyName+"Scenario.arc");
+                string scenarioName = String.Format("/StageData/{0}/{1}Scenario.arc", galaxyName, galaxyName);
 
                 // means it's a galaxy, let's open the map file
                 if (gameFilesystem.FileExists(scenarioName))
                 {
                     // add the root node
-                    TreeNode galaxyNode = new TreeNode(galaxyName);
-                    galaxyNode.Tag = galaxyName;
+                    TreeNode galaxyNode = new TreeNode(galaxyName)
+                    {
+                        Tag = galaxyName
+                    };
                     galaxyListTree.Nodes.Add(galaxyNode);
 
                     // now we open the scenario file
@@ -87,8 +91,10 @@ namespace MilkyEditor
                     // go through each entry in the bcsv, when each one represents the zones
                     foreach(Bcsv.Entry entry in zoneListInfoFile.Entries)
                     {
-                        TreeNode stageNode = new TreeNode((string)entry["ZoneName"]);
-                        stageNode.Tag = (string)entry["ZoneName"];
+                        TreeNode stageNode = new TreeNode((string)entry["ZoneName"])
+                        {
+                            Tag = (string)entry["ZoneName"]
+                        };
 
                         galaxyNode.Nodes.Add(stageNode);
                     }
@@ -103,8 +109,6 @@ namespace MilkyEditor
             gameFilesystem.Close();
         }
 
-        string chosenFolderPath;
-
         private void galaxyListTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (galaxyListTree.SelectedNode.Parent != null)
@@ -115,7 +119,12 @@ namespace MilkyEditor
                 else
                     isZone = true;
 
-                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, isZone);
+                List<string> layers = new List<string>
+                {
+                    "Common"
+                };
+
+                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, layers, isZone);
                 editorForm.Show();
             }
         }
@@ -130,7 +139,12 @@ namespace MilkyEditor
                 else
                     isZone = true;
 
-                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, isZone);
+                List<string> layers = new List<string>
+                {
+                    "Common"
+                };
+                
+                LevelEditorForm editorForm = new LevelEditorForm(gameFilesystem, (string)galaxyListTree.SelectedNode.Tag, layers, isZone);
                 editorForm.Show();
             }
         }
@@ -141,5 +155,6 @@ namespace MilkyEditor
         }
 
         ExternalFilesystem gameFilesystem;
+        string chosenFolderPath;
     }
 }

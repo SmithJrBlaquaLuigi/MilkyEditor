@@ -5,7 +5,7 @@ namespace MilkyEditor.Widgets
 {
     class ScenarioEditorWidget : FlowLayoutPanel
     {
-        public ScenarioEditorWidget(ScenarioEntry scenarioEntry)
+        public ScenarioEditorWidget(Scenario scenarioEntry)
         {
             entry = scenarioEntry;
 
@@ -215,7 +215,7 @@ namespace MilkyEditor.Widgets
         private void ScenarioNo_ValueChanged(object sender, EventArgs e) { entry.ScenarioNo = (int)scenarioNo.Value; }
         private void ScenarioName_TextChanged(object sender, EventArgs e) { entry.ScenarioName = scenarioName.Text; }
 
-        ScenarioEntry entry;
+        Scenario entry;
 
         NumericUpDown scenarioNo;
         TextBox scenarioName;

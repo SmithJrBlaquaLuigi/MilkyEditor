@@ -15,36 +15,32 @@ namespace MilkyEditor
 {
     public partial class LevelEditorForm : Form
     {
-        public LevelEditorForm(ExternalFilesystem filesystem, string name, bool isGalaxyZone)
+        public LevelEditorForm(ExternalFilesystem filesystem, string name, List<string> galaxyLayers, bool isGalaxyZone)
         {
             InitializeComponent();
             Text = "Milky Editor v0.1 -- Editing " + name;
 
             gameFilesystem = filesystem;
             galaxyName = name;
+            layers = galaxyLayers;
             isZone = isGalaxyZone;
 
-            LoadData();
-            
-        }
-
-        private void LoadData()
-        {
-            if (!isZone)
+            // now we create the galaxy if it's not just a zone
+            // this way, we also have to enable a lot of things
+            if (!isGalaxyZone)
             {
-                bottomStatusStripLabel.Text = "Loading galaxy " + galaxyName + "...";
-
-                Galaxy galaxy = new Galaxy(galaxyName, gameFilesystem);
-                // can only edit scenarios under galaxy files
-                scenarioTreeView.Enabled = true;
+                // first we enable a few things
                 scenarioEditingToolbar.Enabled = true;
+                scenarioTreeView.Enabled = true;
+                // now we create the galaxy
+                galaxy = new Galaxy(galaxyName, layers, gameFilesystem);
 
-                Scenario scenario = galaxy.scenario;
-
-                foreach(ScenarioEntry entry in scenario.entries)
+                /*
+                 * First we get the scenario data from the galaxy
+                 */
+                foreach (Scenario entry in galaxy.scenarios)
                 {
-                    string nodeName = String.Format("[{0}] {1}", entry.ScenarioNo, entry.ScenarioName);
-                    TreeNode node = new TreeNode(nodeName)
+                    TreeNode node = new TreeNode(entry.ToString())
                     {
                         Tag = entry
                     };
@@ -52,8 +48,10 @@ namespace MilkyEditor
                     scenarioTreeView.Nodes.Add(node);
                 }
 
-                // first we add the ones in the actual galaxy
-                foreach(Light light in galaxy.lightData)
+                /*
+                 * Now we add the light data
+                 */
+                foreach (Light light in galaxy.lights)
                 {
                     TreeNode node = new TreeNode(light.ToString())
                     {
@@ -62,61 +60,55 @@ namespace MilkyEditor
 
                     lightDataTree.Nodes.Add(node);
                 }
-
-                // now we add the ones in the cooresponding zones
-                if (galaxy.zones != null)
-                {
-                    foreach(Zone zone in galaxy.zones)
-                    {
-                        List<Light> lights = zone.lightData;
-                        if (lights != null)
-                        {
-                            foreach (Light light in lights)
-                            {
-                                TreeNode node = new TreeNode(light.ToString())
-                                {
-                                    Tag = light
-                                };
-
-                                lightDataTree.Nodes.Add(node);
-                            }
-                        }
-                    }
-                }
             }
-            else
-            {
-                bottomStatusStripLabel.Text = "Loading zone " + galaxyName + "...";
-
-                Zone zone = new Zone(galaxyName, gameFilesystem);
-                scenarioTreeView.Enabled = false;
-                scenarioEditingToolbar.Enabled = false;
-
-                List<Light> lights = zone.lightData;
-                if (lights != null)
-                {
-                    foreach (Light light in lights)
-                    {
-                        TreeNode node = new TreeNode(light.ToString())
-                        {
-                            Tag = light
-                        };
-
-                        lightDataTree.Nodes.Add(node);
-                    }
-                }
-            }
-
-            bottomStatusStripLabel.Text = "Done.";
         }
 
         private void ScenarioTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             scenarioEditorPanel.Controls.Clear();
+            layers.Clear();
+
+            Scenario scenario = (Scenario)scenarioTreeView.SelectedNode.Tag;
+            Bcsv.Entry entry = scenario.ScenarioEntry;
+
+            int LayerMask = Convert.ToInt32(entry[galaxyName]);
+            galaxy = null; // nullify the current galaxy so we can make a new one
+
+            string[] glayers = new string[]
+            {
+                "LayerA",
+                "LayerB",
+                "LayerC",
+                "LayerD",
+                "LayerE",
+                "LayerF",
+                "LayerG",
+                "LayerH",
+                "LayerI",
+                "LayerJ",
+                "LayerK",
+                "LayerL",
+                "LayerM",
+                "LayerN",
+                "LayerO",
+                "LayerP"
+            };
+
+            for (int i = 0; i < glayers.Length; i++)
+            {
+                if (((LayerMask >> i) & 0x1) != 0x0)
+                {
+                    layers.Add(glayers[i]);
+                }
+            }
+
+            layers.Add("Common"); // always load common
+
+            galaxy = new Galaxy(galaxyName, layers, gameFilesystem);
 
             if (scenarioTreeView.SelectedNode != null)
             {
-                ScenarioEditorWidget scenarioEditor = new ScenarioEditorWidget((ScenarioEntry)scenarioTreeView.SelectedNode.Tag);
+                ScenarioEditorWidget scenarioEditor = new ScenarioEditorWidget((Scenario)scenarioTreeView.SelectedNode.Tag);
                 scenarioEditor.GeneratePanel();
 
                 scenarioEditorPanel.Controls.Add(scenarioEditor);
@@ -137,6 +129,8 @@ namespace MilkyEditor
 
         ExternalFilesystem gameFilesystem;
         string galaxyName;
+        List<string> layers;
         bool isZone;
+        Galaxy galaxy;
     }
 }

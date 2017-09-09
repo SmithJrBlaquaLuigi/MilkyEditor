@@ -10,9 +10,9 @@ namespace MilkyEditor
 {
     class Zone
     {
-        public Zone(string name, ExternalFilesystem gameFilesystem)
+        // zones don't use scenario data
+        public Zone(string name, string layer, ExternalFilesystem gameFilesystem)
         {
-
             /*
              * Light Data
              */
