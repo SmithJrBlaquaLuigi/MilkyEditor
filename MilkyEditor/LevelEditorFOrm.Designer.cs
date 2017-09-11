@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelEditorForm));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Map");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Light");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sound");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +59,10 @@
             this.lightViewPanel = new System.Windows.Forms.Panel();
             this.lightDataTree = new System.Windows.Forms.TreeView();
             this.glViewPanel = new System.Windows.Forms.Panel();
+            this.objectsPage = new System.Windows.Forms.TabPage();
+            this.objectsTreeView = new System.Windows.Forms.TreeView();
+            this.areasPage = new System.Windows.Forms.TabPage();
+            this.areasTreeView = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -64,6 +71,8 @@
             this.scenarioPage.SuspendLayout();
             this.scenarioEditingToolbar.SuspendLayout();
             this.lightPage.SuspendLayout();
+            this.objectsPage.SuspendLayout();
+            this.areasPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -189,6 +198,8 @@
             // 
             this.tabControl1.Controls.Add(this.scenarioPage);
             this.tabControl1.Controls.Add(this.lightPage);
+            this.tabControl1.Controls.Add(this.objectsPage);
+            this.tabControl1.Controls.Add(this.areasPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -326,6 +337,54 @@
             this.glViewPanel.Size = new System.Drawing.Size(516, 310);
             this.glViewPanel.TabIndex = 4;
             // 
+            // objectsPage
+            // 
+            this.objectsPage.Controls.Add(this.objectsTreeView);
+            this.objectsPage.Location = new System.Drawing.Point(4, 22);
+            this.objectsPage.Name = "objectsPage";
+            this.objectsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.objectsPage.Size = new System.Drawing.Size(293, 284);
+            this.objectsPage.TabIndex = 2;
+            this.objectsPage.Text = "Objects";
+            this.objectsPage.UseVisualStyleBackColor = true;
+            // 
+            // objectsTreeView
+            // 
+            this.objectsTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.objectsTreeView.Location = new System.Drawing.Point(3, 3);
+            this.objectsTreeView.Name = "objectsTreeView";
+            this.objectsTreeView.Size = new System.Drawing.Size(287, 278);
+            this.objectsTreeView.TabIndex = 0;
+            // 
+            // areasPage
+            // 
+            this.areasPage.Controls.Add(this.areasTreeView);
+            this.areasPage.Location = new System.Drawing.Point(4, 22);
+            this.areasPage.Name = "areasPage";
+            this.areasPage.Padding = new System.Windows.Forms.Padding(3);
+            this.areasPage.Size = new System.Drawing.Size(293, 284);
+            this.areasPage.TabIndex = 3;
+            this.areasPage.Text = "Areas";
+            this.areasPage.UseVisualStyleBackColor = true;
+            // 
+            // areasTreeView
+            // 
+            this.areasTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.areasTreeView.Location = new System.Drawing.Point(3, 3);
+            this.areasTreeView.Name = "areasTreeView";
+            treeNode1.Name = "MapNode";
+            treeNode1.Text = "Map";
+            treeNode2.Name = "LightNode";
+            treeNode2.Text = "Light";
+            treeNode3.Name = "SoundNode";
+            treeNode3.Text = "Sound";
+            this.areasTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3});
+            this.areasTreeView.Size = new System.Drawing.Size(287, 278);
+            this.areasTreeView.TabIndex = 0;
+            // 
             // LevelEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -354,6 +413,8 @@
             this.scenarioEditingToolbar.ResumeLayout(false);
             this.scenarioEditingToolbar.PerformLayout();
             this.lightPage.ResumeLayout(false);
+            this.objectsPage.ResumeLayout(false);
+            this.areasPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,5 +449,9 @@
         private System.Windows.Forms.Panel scenarioEditorPanel;
         private System.Windows.Forms.Panel lightViewPanel;
         private System.Windows.Forms.TreeView lightDataTree;
+        private System.Windows.Forms.TabPage objectsPage;
+        private System.Windows.Forms.TreeView objectsTreeView;
+        private System.Windows.Forms.TabPage areasPage;
+        private System.Windows.Forms.TreeView areasTreeView;
     }
 }

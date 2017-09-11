@@ -58,7 +58,7 @@ namespace MilkyEditor.Filesystem
                             break;
 
                         case 4:
-                            val = (ushort)((m_File.Reader.ReadUInt16() & field.Mask) >> field.ShiftAmount);
+                            val = (short)((m_File.Reader.ReadUInt16() & field.Mask) >> field.ShiftAmount);
                             break;
 
                         case 5:

@@ -24,17 +24,99 @@ namespace MilkyEditor
                 RarcFilesystem lightArchive = new RarcFilesystem(gameFilesystem.OpenFile(lightFile));
                 Bcsv lightBcsv = new Bcsv(lightArchive.OpenFile(lightBcsvFile));
 
-                lightData = new List<Light>();
+                lights = new List<Light>();
                 foreach (Bcsv.Entry entry in lightBcsv.Entries)
-                    lightData.Add(new Light(entry, name));
+                    lights.Add(new Light(entry, name));
 
                 lightArchive.Close();
                 lightBcsv.Close();
             }
 
+            string mapFile = String.Format("/StageData/{0}/{0}Map.arc", name);
+            string designFile = String.Format("/StageData/{0}/{0}Design.arc", name);
+            string soundFile = String.Format("/StageData/{0}/{0}Sound.arc", name);
+
+            RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
+
+            // we need to check to see if it exists
+            // if it doesn't, load Common
+            if (!mapArchive.DirectoryExists("/Stage/jmp/Placement/" + layer))
+                layer = "Common";
+
+            string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
+            string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
+            string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
+
+            Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
+
+            objects = new List<LevelObject>();
+
+            foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
+                objects.Add(new LevelObject(entry, layer));
+
+            mapObjBcsv.Close();
+
+            /* 
+             * Area objects
+             * This section requires the opening of 3 seperate files.
+             * Map.arc, Design.arc, and Sound.arc
+             * We'll open up the map bcsv first, since it's the easiest.
+             */
+
+            Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
+
+            areas = new List<AreaObject>();
+
+            // type 0, map
+            foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
+                areas.Add(new AreaObject(entry, layer, 0));
+
+            mapAreaBcsv.Close();
+            mapArchive.Close();
+
+            // type 1, design
+            if (gameFilesystem.FileExists(designFile))
+            {
+                RarcFilesystem designArchive = new RarcFilesystem(gameFilesystem.OpenFile(designFile));
+
+                // sometimes the ARC will exist, but the file with the layer does not.
+                if (designArchive.FileExists(areaObjFile))
+                {
+                    Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
+
+                    foreach (Bcsv.Entry entry in designBcsv.Entries)
+                        areas.Add(new AreaObject(entry, layer, 1));
+
+                    designBcsv.Close();
+                }
+
+                designArchive.Close();
+            }
+
+            // type 2, sound
+            if (gameFilesystem.FileExists(soundFile))
+            {
+                RarcFilesystem soundArchive = new RarcFilesystem(gameFilesystem.OpenFile(soundFile));
+
+                if (soundArchive.FileExists(areaObjFile))
+                {
+                    Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
+
+                    foreach (Bcsv.Entry entry in soundBcsv.Entries)
+                        areas.Add(new AreaObject(entry, layer, 2));
+
+                    soundBcsv.Close();
+                }
+
+                soundArchive.Close();
+            }
+
+            mapArchive.Close();
             gameFilesystem.Close();
         }
 
-        public List<Light> lightData;
+        public List<Light> lights;
+        public List<LevelObject> objects;
+        public List<AreaObject> areas;
     }
 }

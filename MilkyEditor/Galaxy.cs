@@ -62,11 +62,16 @@ namespace MilkyEditor
              * The zone data is the first thing loaded that requires a loop through each used layer
              */
             string mapFile = String.Format("/StageData/{0}/{0}Map.arc", galaxyName);
+            string designFile = String.Format("/StageData/{0}/{0}Design.arc", galaxyName);
+            string soundFile = String.Format("/StageData/{0}/{0}Sound.arc", galaxyName);
 
             zones = new List<Zone>();
+            objects = new List<LevelObject>();
 
             foreach (string layer in layers)
             {
+                string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
+                string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
                 string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
 
                 RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
@@ -75,11 +80,72 @@ namespace MilkyEditor
                 foreach (Bcsv.Entry entry in stageObjBcsv.Entries)
                     zones.Add(new Zone(Convert.ToString(entry["name"]), layer, gameFilesystem));
 
-                mapArchive.Close();
                 stageObjBcsv.Close();
+
+                // Map Objects
+
+                Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
+
+                foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
+                    objects.Add(new LevelObject(entry, layer));
+
+                mapObjBcsv.Close();
+
+                /* 
+                 * Area objects
+                 * This section requires the opening of 3 seperate files.
+                 * Map.arc, Design.arc, and Sound.arc
+                 * We'll open up the map bcsv first, since it's the easiest.
+                 */
+
+                Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
+
+                areas = new List<AreaObject>();
+
+                // type 0, map
+                foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
+                    areas.Add(new AreaObject(entry, layer, 0));
+
+                mapAreaBcsv.Close();
+                mapArchive.Close();
+
+                // type 1, design
+                if (gameFilesystem.FileExists(designFile))
+                {
+                    RarcFilesystem designArchive = new RarcFilesystem(gameFilesystem.OpenFile(designFile));
+
+                    // sometimes the ARC will exist, but the file with the layer does not.
+                    if (designArchive.FileExists(areaObjFile))
+                    {
+                        Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
+
+                        foreach (Bcsv.Entry entry in designBcsv.Entries)
+                            areas.Add(new AreaObject(entry, layer, 1));
+
+                        designBcsv.Close();
+                    }
+
+                    designArchive.Close();
+                }
+
+                // type 2, sound
+                if (gameFilesystem.FileExists(soundFile))
+                {
+                    RarcFilesystem soundArchive = new RarcFilesystem(gameFilesystem.OpenFile(soundFile));
+
+                    if (soundArchive.FileExists(areaObjFile))
+                    {
+                        Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
+
+                        foreach (Bcsv.Entry entry in soundBcsv.Entries)
+                            areas.Add(new AreaObject(entry, layer, 2));
+
+                        soundBcsv.Close();
+                    }
+
+                    soundArchive.Close();
+                }
             }
-
-
             gameFilesystem.Close();
         }
 
@@ -91,5 +157,7 @@ namespace MilkyEditor
         public List<Scenario> scenarios;
         public List<Light> lights;
         public List<Zone> zones;
+        public List<LevelObject> objects;
+        public List<AreaObject> areas;
     }
 }

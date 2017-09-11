@@ -60,6 +60,174 @@ namespace MilkyEditor
 
                     lightDataTree.Nodes.Add(node);
                 }
+
+                // that was just for the galaxy itself, now we have to add the data from the zones
+                foreach (Zone zone in galaxy.zones)
+                {
+                    List<Light> lights = new List<Light>();
+                    lights = zone.lights;
+
+                    if (lights == null)
+                        break;
+
+                    foreach (Light light in lights)
+                    {
+                        TreeNode node = new TreeNode(light.ToString())
+                        {
+                            Tag = light
+                        };
+
+                        lightDataTree.Nodes.Add(node);
+                    }
+                }
+
+                FillObjectTree();
+                FillAreaTree();
+            }
+            // this means that the selected level is just a zone
+            else
+            {
+                zone = new Zone(galaxyName, layers[0], gameFilesystem);
+
+                if (zone.lights != null)
+                {
+                    foreach (Light light in zone.lights)
+                    {
+                        TreeNode node = new TreeNode(light.ToString())
+                        {
+                            Tag = light
+                        };
+
+                        lightDataTree.Nodes.Add(node);
+                    }
+                }
+
+                FillObjectTree();
+                FillAreaTree();
+            }
+        }
+
+        private void FillObjectTree()
+        {
+            // clear the objects first
+            objectsTreeView.Nodes.Clear();
+
+            /* first the galaxy's objects */
+            if (!isZone)
+            {
+                foreach (LevelObject obj in galaxy.objects)
+                {
+                    TreeNode node = new TreeNode(obj.ToString())
+                    {
+                        Tag = obj
+                    };
+
+                    objectsTreeView.Nodes.Add(node);
+                }
+            }
+
+            // now this is only for zones by themselves
+            if (galaxy == null)
+            {
+                foreach (LevelObject obj in zone.objects)
+                {
+                    TreeNode node = new TreeNode(obj.ToString())
+                    {
+                        Tag = obj
+                    };
+
+                    objectsTreeView.Nodes.Add(node);
+                }
+                return;
+            }
+
+            /* now the zones' objects*/
+            foreach (Zone zone in galaxy.zones)
+            {
+                foreach (LevelObject obj in zone.objects)
+                {
+                    TreeNode node = new TreeNode(obj.ToString())
+                    {
+                        Tag = obj
+                    };
+
+                    objectsTreeView.Nodes.Add(node);
+                }
+            }
+        }
+
+        private void FillAreaTree()
+        {
+            areasTreeView.Nodes[0].Nodes.Clear();
+            areasTreeView.Nodes[1].Nodes.Clear();
+            areasTreeView.Nodes[2].Nodes.Clear();
+
+            if (!isZone)
+            {
+                foreach(AreaObject garea in galaxy.areas)
+                {
+                    TreeNode node = new TreeNode(garea.ToString());
+                    node.Tag = garea;
+
+                    switch (garea.Type)
+                    {
+                        case 0:
+                            areasTreeView.Nodes[0].Nodes.Add(node);
+                            break;
+                        case 1:
+                            areasTreeView.Nodes[1].Nodes.Add(node);
+                            break;
+                        case 2:
+                            areasTreeView.Nodes[2].Nodes.Add(node);
+                            break;
+                    }
+                }
+
+                foreach(Zone zone in galaxy.zones)
+                {
+                    if (zone.areas == null)
+                        break;
+
+                    foreach(AreaObject area in zone.areas)
+                    {
+                        TreeNode node = new TreeNode(area.ToString());
+                        node.Tag = area;
+
+                        switch(area.Type)
+                        {
+                            case 0:
+                                areasTreeView.Nodes[0].Nodes.Add(node);
+                                break;
+                            case 1:
+                                areasTreeView.Nodes[1].Nodes.Add(node);
+                                break;
+                            case 2:
+                                areasTreeView.Nodes[2].Nodes.Add(node);
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (AreaObject area in zone.areas)
+                {
+                    TreeNode node = new TreeNode(area.ToString());
+                    node.Tag = area;
+
+                    switch (area.Type)
+                    {
+                        case 0:
+                            areasTreeView.Nodes[0].Nodes.Add(node);
+                            break;
+                        case 1:
+                            areasTreeView.Nodes[1].Nodes.Add(node);
+                            break;
+                        case 2:
+                            areasTreeView.Nodes[2].Nodes.Add(node);
+                            break;
+                    }
+                }
             }
         }
 
@@ -67,6 +235,8 @@ namespace MilkyEditor
         {
             scenarioEditorPanel.Controls.Clear();
             layers.Clear();
+
+            layers.Add("Common"); // always load common
 
             Scenario scenario = (Scenario)scenarioTreeView.SelectedNode.Tag;
             Bcsv.Entry entry = scenario.ScenarioEntry;
@@ -102,13 +272,14 @@ namespace MilkyEditor
                 }
             }
 
-            layers.Add("Common"); // always load common
-
             galaxy = new Galaxy(galaxyName, layers, gameFilesystem);
+
+            FillObjectTree();
+            FillAreaTree();
 
             if (scenarioTreeView.SelectedNode != null)
             {
-                ScenarioEditorWidget scenarioEditor = new ScenarioEditorWidget((Scenario)scenarioTreeView.SelectedNode.Tag);
+                ScenarioEditorWidget scenarioEditor = new ScenarioEditorWidget(scenario);
                 scenarioEditor.GeneratePanel();
 
                 scenarioEditorPanel.Controls.Add(scenarioEditor);
@@ -132,5 +303,6 @@ namespace MilkyEditor
         List<string> layers;
         bool isZone;
         Galaxy galaxy;
+        Zone zone;
     }
 }
