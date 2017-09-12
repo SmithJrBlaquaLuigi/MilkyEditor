@@ -73,6 +73,7 @@ namespace MilkyEditor
                 string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
                 string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
                 string mapPartsFile = String.Format("/Stage/jmp/MapParts/{0}/MapPartsInfo", layer);
+                string demoObjFile = String.Format("/Stage/jmp/Placement/{0}/DemoObjInfo", layer);
                 string startingObjFile = String.Format("/Stage/jmp/Start/{0}/StartInfo", layer);
                 string cameraAreaFile = String.Format("/Stage/jmp/Placement/{0}/CameraCubeInfo", layer);
                 string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
@@ -126,6 +127,16 @@ namespace MilkyEditor
                     mapParts.Add(new MapPartsObject(entry, layer));
 
                 mapPartsBcsv.Close();
+
+                /* Demo Objects */
+                Bcsv demoInfoBcsv = new Bcsv(mapArchive.OpenFile(demoObjFile));
+
+                demos = new List<DemoObject>();
+
+                foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
+                    demos.Add(new DemoObject(entry, layer));
+
+                demoInfoBcsv.Close();
 
                 /* 
                  * Area objects
@@ -224,6 +235,7 @@ namespace MilkyEditor
         public List<Light> lights;
         public List<Zone> zones;
         public List<LevelObject> objects;
+        public List<DemoObject> demos;
         public List<StartObject> startingPoints;
         public List<AreaObject> areas;
         public List<CameraObject> cameras;

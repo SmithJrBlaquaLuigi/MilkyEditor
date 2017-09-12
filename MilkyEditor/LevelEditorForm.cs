@@ -94,8 +94,10 @@ namespace MilkyEditor
 
                     foreach (PathPointObject pointObj in path.points)
                     {
-                        TreeNode childNode = new TreeNode("Path Point " + index);
-                        childNode.Tag = pointObj;
+                        TreeNode childNode = new TreeNode("Path Point " + index)
+                        {
+                            Tag = pointObj
+                        };
 
                         node.Nodes.Add(childNode);
 
@@ -105,6 +107,7 @@ namespace MilkyEditor
 
                 FillObjectTree();
                 FillAreaTree();
+                FillStartTree();
             }
             // this means that the selected level is just a zone
             else
@@ -189,8 +192,10 @@ namespace MilkyEditor
             {
                 foreach(AreaObject garea in galaxy.areas)
                 {
-                    TreeNode node = new TreeNode(garea.ToString());
-                    node.Tag = garea;
+                    TreeNode node = new TreeNode(garea.ToString())
+                    {
+                        Tag = garea
+                    };
 
                     switch (garea.Type)
                     {
@@ -223,10 +228,12 @@ namespace MilkyEditor
 
                     foreach(AreaObject area in zone.areas)
                     {
-                        TreeNode node = new TreeNode(area.ToString());
-                        node.Tag = area;
+                        TreeNode node = new TreeNode(area.ToString())
+                        {
+                            Tag = area
+                        };
 
-                        switch(area.Type)
+                        switch (area.Type)
                         {
                             case 0:
                                 areasTreeView.Nodes[0].Nodes.Add(node);
@@ -245,8 +252,10 @@ namespace MilkyEditor
             {
                 foreach (AreaObject area in zone.areas)
                 {
-                    TreeNode node = new TreeNode(area.ToString());
-                    node.Tag = area;
+                    TreeNode node = new TreeNode(area.ToString())
+                    {
+                        Tag = area
+                    };
 
                     switch (area.Type)
                     {

@@ -13,9 +13,21 @@ namespace MilkyEditor
         // zones don't use scenario data
         public Zone(string name, string layer, ExternalFilesystem gameFilesystem)
         {
+            ZoneName = name;
+            List<string> layers = new List<string>();
+
+            if (layer != "Common")
+            {
+                layers.Add(layer);
+                layers.Add("Common");
+            }
+            else
+                layers.Add("Common");
+
             /*
              * Light Data
              */
+
             string lightFile = String.Format("/StageData/{0}/{0}Light.arc", name);
 
             if (gameFilesystem.FileExists(lightFile))
@@ -38,119 +50,135 @@ namespace MilkyEditor
 
             RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
 
-            // we need to check to see if it exists
-            // if it doesn't, load Common
-            if (!mapArchive.DirectoryExists("/Stage/jmp/Placement/" + layer))
-                layer = "Common";
-
-            string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
-            string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
-            string mapPartsFile = String.Format("/Stage/jmp/MapParts/{0}/MapPartsInfo", layer);
-            string startingObjFile = String.Format("/Stage/jmp/Start/{0}/StartInfo", layer);
-            string cameraAreaFile = String.Format("/Stage/jmp/Placement/{0}/CameraCubeInfo", layer);
-            string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
-
-            Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
-
-            objects = new List<LevelObject>();
-
-            foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
-                objects.Add(new LevelObject(entry, layer));
-
-            mapObjBcsv.Close();
-
-            Bcsv startObjBcsv = new Bcsv(mapArchive.OpenFile(startingObjFile));
-
-            startingPoints = new List<StartObject>();
-
-            foreach (Bcsv.Entry entry in startObjBcsv.Entries)
-                startingPoints.Add(new StartObject(entry, layer, name));
-
-            startObjBcsv.Close();
-
-            /* Camera Areas */
-            Bcsv cameraCubeBcsv = new Bcsv(mapArchive.OpenFile(cameraAreaFile));
-
-            cameras = new List<CameraObject>();
-
-            foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
-                cameras.Add(new CameraObject(entry, layer));
-
-            cameraCubeBcsv.Close();
-
-            /* Map Parts */
-            mapParts = new List<MapPartsObject>();
-
-            Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
-
-            foreach (Bcsv.Entry entry in mapPartsBcsv.Entries)
-                mapParts.Add(new MapPartsObject(entry, layer));
-
-            mapPartsBcsv.Close();
-
-            /* 
-             * Area objects
-             * This section requires the opening of 3 seperate files.
-             * Map.arc, Design.arc, and Sound.arc
-             * We'll open up the map bcsv first, since it's the easiest.
-             */
-
-            Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
-
-            areas = new List<AreaObject>();
-
-            // type 0, map
-            foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
-                areas.Add(new AreaObject(entry, layer, 0));
-
-            mapAreaBcsv.Close();
-            mapArchive.Close();
-
-            // type 1, design
-            if (gameFilesystem.FileExists(designFile))
+            foreach (string cur_layer in layers)
             {
-                RarcFilesystem designArchive = new RarcFilesystem(gameFilesystem.OpenFile(designFile));
 
-                // sometimes the ARC will exist, but the file with the layer does not.
-                if (designArchive.FileExists(areaObjFile))
+                // we need to check to see if it exists
+                // if it doesn't, load Common
+                if (!mapArchive.DirectoryExists("/Stage/jmp/Placement/" + cur_layer))
+                    layer = "Common";
+                else
+                    layer = cur_layer;
+
+                string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
+                string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
+                string mapPartsFile = String.Format("/Stage/jmp/MapParts/{0}/MapPartsInfo", layer);
+                string demoObjFile = String.Format("/Stage/jmp/Placement/{0}/DemoObjInfo", layer);
+                string startingObjFile = String.Format("/Stage/jmp/Start/{0}/StartInfo", layer);
+                string cameraAreaFile = String.Format("/Stage/jmp/Placement/{0}/CameraCubeInfo", layer);
+                string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
+
+                Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
+
+                objects = new List<LevelObject>();
+
+                foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
+                    objects.Add(new LevelObject(entry, layer));
+
+                mapObjBcsv.Close();
+
+                Bcsv startObjBcsv = new Bcsv(mapArchive.OpenFile(startingObjFile));
+
+                startingPoints = new List<StartObject>();
+
+                foreach (Bcsv.Entry entry in startObjBcsv.Entries)
+                    startingPoints.Add(new StartObject(entry, layer, name));
+
+                startObjBcsv.Close();
+
+                /* Camera Areas */
+                Bcsv cameraCubeBcsv = new Bcsv(mapArchive.OpenFile(cameraAreaFile));
+
+                cameras = new List<CameraObject>();
+
+                foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
+                    cameras.Add(new CameraObject(entry, layer));
+
+                cameraCubeBcsv.Close();
+
+                /* Map Parts */
+                mapParts = new List<MapPartsObject>();
+
+                Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
+
+                foreach (Bcsv.Entry entry in mapPartsBcsv.Entries)
+                    mapParts.Add(new MapPartsObject(entry, layer));
+
+                mapPartsBcsv.Close();
+
+                /* Demo Objects */
+                Bcsv demoInfoBcsv = new Bcsv(mapArchive.OpenFile(demoObjFile));
+
+                demos = new List<DemoObject>();
+
+                foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
+                    demos.Add(new DemoObject(entry, layer));
+
+                demoInfoBcsv.Close();
+
+                /* 
+                 * Area objects
+                 * This section requires the opening of 3 seperate files.
+                 * Map.arc, Design.arc, and Sound.arc
+                 * We'll open up the map bcsv first, since it's the easiest.
+                 */
+
+                Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
+
+                areas = new List<AreaObject>();
+
+                // type 0, map
+                foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
+                    areas.Add(new AreaObject(entry, layer, 0));
+
+                mapAreaBcsv.Close();
+
+                // type 1, design
+                if (gameFilesystem.FileExists(designFile))
                 {
-                    Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
+                    RarcFilesystem designArchive = new RarcFilesystem(gameFilesystem.OpenFile(designFile));
 
-                    foreach (Bcsv.Entry entry in designBcsv.Entries)
-                        areas.Add(new AreaObject(entry, layer, 1));
+                    // sometimes the ARC will exist, but the file with the layer does not.
+                    if (designArchive.FileExists(areaObjFile))
+                    {
+                        Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
 
-                    designBcsv.Close();
+                        foreach (Bcsv.Entry entry in designBcsv.Entries)
+                            areas.Add(new AreaObject(entry, layer, 1));
+
+                        designBcsv.Close();
+                    }
+
+                    designArchive.Close();
                 }
 
-                designArchive.Close();
-            }
-
-            // type 2, sound
-            if (gameFilesystem.FileExists(soundFile))
-            {
-                RarcFilesystem soundArchive = new RarcFilesystem(gameFilesystem.OpenFile(soundFile));
-
-                if (soundArchive.FileExists(areaObjFile))
+                // type 2, sound
+                if (gameFilesystem.FileExists(soundFile))
                 {
-                    Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
+                    RarcFilesystem soundArchive = new RarcFilesystem(gameFilesystem.OpenFile(soundFile));
 
-                    foreach (Bcsv.Entry entry in soundBcsv.Entries)
-                        areas.Add(new AreaObject(entry, layer, 2));
+                    if (soundArchive.FileExists(areaObjFile))
+                    {
+                        Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
 
-                    soundBcsv.Close();
+                        foreach (Bcsv.Entry entry in soundBcsv.Entries)
+                            areas.Add(new AreaObject(entry, layer, 2));
+
+                        soundBcsv.Close();
+                    }
+
+                    if (soundArchive.FileExists(mapObjFile))
+                    {
+                        Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
+
+                        foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
+                            objects.Add(new LevelObject(entry, layer));
+
+                        soundObjBcsv.Close();
+                    }
+
+                    soundArchive.Close();
                 }
-
-                if (soundArchive.FileExists(mapObjFile))
-                {
-                    Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
-
-                    foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
-                        objects.Add(new LevelObject(entry, layer));
-
-                    soundObjBcsv.Close();
-                }
-
-                soundArchive.Close();
             }
 
             mapArchive.Close();
@@ -159,9 +187,12 @@ namespace MilkyEditor
 
         public List<Light> lights;
         public List<LevelObject> objects;
+        public List<DemoObject> demos;
         public List<StartObject> startingPoints;
         public List<AreaObject> areas;
         public List<CameraObject> cameras;
         public List<MapPartsObject> mapParts;
+
+        string ZoneName;
     }
 }
