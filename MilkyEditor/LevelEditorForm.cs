@@ -104,6 +104,7 @@ namespace MilkyEditor
 
                 FillObjectTree();
                 FillAreaTree();
+                FillStartTree();
             }
         }
 
@@ -231,6 +232,49 @@ namespace MilkyEditor
             }
         }
 
+        private void FillStartTree()
+        {
+            startingPointsTree.Nodes.Clear();
+
+            if (!isZone)
+            {
+                foreach (StartObject start in galaxy.startingPoints)
+                {
+                    TreeNode node = new TreeNode(start.ToString())
+                    {
+                        Tag = start
+                    };
+
+                    startingPointsTree.Nodes.Add(node);
+                }
+
+                foreach(Zone zone in galaxy.zones)
+                {
+                    foreach (StartObject start in zone.startingPoints)
+                    {
+                        TreeNode node = new TreeNode(start.ToString())
+                        {
+                            Tag = start
+                        };
+
+                        startingPointsTree.Nodes.Add(node);
+                    }
+                }
+            }
+            else
+            {
+                foreach (StartObject start in zone.startingPoints)
+                {
+                    TreeNode node = new TreeNode(start.ToString())
+                    {
+                        Tag = start
+                    };
+
+                    startingPointsTree.Nodes.Add(node);
+                }
+            }
+        }
+
         private void ScenarioTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             scenarioEditorPanel.Controls.Clear();
@@ -276,6 +320,7 @@ namespace MilkyEditor
 
             FillObjectTree();
             FillAreaTree();
+            FillStartTree();
 
             if (scenarioTreeView.SelectedNode != null)
             {

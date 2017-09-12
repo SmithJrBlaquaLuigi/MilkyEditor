@@ -32,6 +32,7 @@
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Map");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Light");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sound");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Cameras");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +64,11 @@
             this.objectsTreeView = new System.Windows.Forms.TreeView();
             this.areasPage = new System.Windows.Forms.TabPage();
             this.areasTreeView = new System.Windows.Forms.TreeView();
+            this.startingPointsPage = new System.Windows.Forms.TabPage();
+            this.startingPointsTree = new System.Windows.Forms.TreeView();
+            this.mappartsPage = new System.Windows.Forms.TabPage();
+            this.miscPage = new System.Windows.Forms.TabPage();
+            this.cameraPage = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -73,6 +79,7 @@
             this.lightPage.SuspendLayout();
             this.objectsPage.SuspendLayout();
             this.areasPage.SuspendLayout();
+            this.startingPointsPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -200,6 +207,10 @@
             this.tabControl1.Controls.Add(this.lightPage);
             this.tabControl1.Controls.Add(this.objectsPage);
             this.tabControl1.Controls.Add(this.areasPage);
+            this.tabControl1.Controls.Add(this.startingPointsPage);
+            this.tabControl1.Controls.Add(this.mappartsPage);
+            this.tabControl1.Controls.Add(this.cameraPage);
+            this.tabControl1.Controls.Add(this.miscPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -378,12 +389,63 @@
             treeNode2.Text = "Light";
             treeNode3.Name = "SoundNode";
             treeNode3.Text = "Sound";
+            treeNode4.Name = "cameraNode";
+            treeNode4.Text = "Cameras";
             this.areasTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
-            treeNode3});
+            treeNode3,
+            treeNode4});
             this.areasTreeView.Size = new System.Drawing.Size(287, 278);
             this.areasTreeView.TabIndex = 0;
+            // 
+            // startingPointsPage
+            // 
+            this.startingPointsPage.Controls.Add(this.startingPointsTree);
+            this.startingPointsPage.Location = new System.Drawing.Point(4, 22);
+            this.startingPointsPage.Name = "startingPointsPage";
+            this.startingPointsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.startingPointsPage.Size = new System.Drawing.Size(293, 284);
+            this.startingPointsPage.TabIndex = 4;
+            this.startingPointsPage.Text = "Start";
+            this.startingPointsPage.UseVisualStyleBackColor = true;
+            // 
+            // startingPointsTree
+            // 
+            this.startingPointsTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.startingPointsTree.Location = new System.Drawing.Point(3, 3);
+            this.startingPointsTree.Name = "startingPointsTree";
+            this.startingPointsTree.Size = new System.Drawing.Size(287, 278);
+            this.startingPointsTree.TabIndex = 0;
+            // 
+            // mappartsPage
+            // 
+            this.mappartsPage.Location = new System.Drawing.Point(4, 22);
+            this.mappartsPage.Name = "mappartsPage";
+            this.mappartsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.mappartsPage.Size = new System.Drawing.Size(293, 284);
+            this.mappartsPage.TabIndex = 5;
+            this.mappartsPage.Text = "Map Parts";
+            this.mappartsPage.UseVisualStyleBackColor = true;
+            // 
+            // miscPage
+            // 
+            this.miscPage.Location = new System.Drawing.Point(4, 22);
+            this.miscPage.Name = "miscPage";
+            this.miscPage.Padding = new System.Windows.Forms.Padding(3);
+            this.miscPage.Size = new System.Drawing.Size(293, 284);
+            this.miscPage.TabIndex = 6;
+            this.miscPage.Text = "Misc";
+            this.miscPage.UseVisualStyleBackColor = true;
+            // 
+            // cameraPage
+            // 
+            this.cameraPage.Location = new System.Drawing.Point(4, 22);
+            this.cameraPage.Name = "cameraPage";
+            this.cameraPage.Size = new System.Drawing.Size(293, 284);
+            this.cameraPage.TabIndex = 7;
+            this.cameraPage.Text = "Cameras";
+            this.cameraPage.UseVisualStyleBackColor = true;
             // 
             // LevelEditorForm
             // 
@@ -415,6 +477,7 @@
             this.lightPage.ResumeLayout(false);
             this.objectsPage.ResumeLayout(false);
             this.areasPage.ResumeLayout(false);
+            this.startingPointsPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -453,5 +516,10 @@
         private System.Windows.Forms.TreeView objectsTreeView;
         private System.Windows.Forms.TabPage areasPage;
         private System.Windows.Forms.TreeView areasTreeView;
+        private System.Windows.Forms.TabPage startingPointsPage;
+        private System.Windows.Forms.TreeView startingPointsTree;
+        private System.Windows.Forms.TabPage mappartsPage;
+        private System.Windows.Forms.TabPage cameraPage;
+        private System.Windows.Forms.TabPage miscPage;
     }
 }

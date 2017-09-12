@@ -64,8 +64,10 @@
     <Compile Include="Filesystem\Yaz0Stream.cs" />
     <Compile Include="Galaxy.cs" />
     <Compile Include="GalaxyObject\AreaObject.cs" />
+    <Compile Include="GalaxyObject\CameraObject.cs" />
     <Compile Include="GalaxyObject\Light.cs" />
     <Compile Include="GalaxyObject\LevelObject.cs" />
+    <Compile Include="GalaxyObject\StartObject.cs" />
     <Compile Include="LevelEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
