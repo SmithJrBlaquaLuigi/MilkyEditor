@@ -81,6 +81,28 @@ namespace MilkyEditor
                     }
                 }
 
+                foreach(PathObject path in galaxy.paths)
+                {
+                    int index = 0;
+
+                    TreeNode node = new TreeNode(path.ToString())
+                    {
+                        Tag = path
+                    };
+
+                    pathsTree.Nodes.Add(node);
+
+                    foreach (PathPointObject pointObj in path.points)
+                    {
+                        TreeNode childNode = new TreeNode("Path Point " + index);
+                        childNode.Tag = pointObj;
+
+                        node.Nodes.Add(childNode);
+
+                        ++index;
+                    }
+                }
+
                 FillObjectTree();
                 FillAreaTree();
             }
@@ -349,5 +371,10 @@ namespace MilkyEditor
         bool isZone;
         Galaxy galaxy;
         Zone zone;
+
+        private void pathsPage_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

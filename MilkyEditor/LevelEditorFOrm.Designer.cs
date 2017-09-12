@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelEditorForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Map");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Light");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sound");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Cameras");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Map");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Light");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Sound");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Cameras");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +69,8 @@
             this.mappartsPage = new System.Windows.Forms.TabPage();
             this.miscPage = new System.Windows.Forms.TabPage();
             this.cameraPage = new System.Windows.Forms.TabPage();
+            this.pathsPage = new System.Windows.Forms.TabPage();
+            this.pathsTree = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -80,6 +82,7 @@
             this.objectsPage.SuspendLayout();
             this.areasPage.SuspendLayout();
             this.startingPointsPage.SuspendLayout();
+            this.pathsPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -203,6 +206,8 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl1.Controls.Add(this.scenarioPage);
             this.tabControl1.Controls.Add(this.lightPage);
             this.tabControl1.Controls.Add(this.objectsPage);
@@ -210,12 +215,12 @@
             this.tabControl1.Controls.Add(this.startingPointsPage);
             this.tabControl1.Controls.Add(this.mappartsPage);
             this.tabControl1.Controls.Add(this.cameraPage);
+            this.tabControl1.Controls.Add(this.pathsPage);
             this.tabControl1.Controls.Add(this.miscPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(301, 310);
+            this.tabControl1.Size = new System.Drawing.Size(298, 310);
             this.tabControl1.TabIndex = 0;
             // 
             // scenarioPage
@@ -383,19 +388,19 @@
             this.areasTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.areasTreeView.Location = new System.Drawing.Point(3, 3);
             this.areasTreeView.Name = "areasTreeView";
-            treeNode1.Name = "MapNode";
-            treeNode1.Text = "Map";
-            treeNode2.Name = "LightNode";
-            treeNode2.Text = "Light";
-            treeNode3.Name = "SoundNode";
-            treeNode3.Text = "Sound";
-            treeNode4.Name = "cameraNode";
-            treeNode4.Text = "Cameras";
+            treeNode13.Name = "MapNode";
+            treeNode13.Text = "Map";
+            treeNode14.Name = "LightNode";
+            treeNode14.Text = "Light";
+            treeNode15.Name = "SoundNode";
+            treeNode15.Text = "Sound";
+            treeNode16.Name = "cameraNode";
+            treeNode16.Text = "Cameras";
             this.areasTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
+            treeNode13,
+            treeNode14,
+            treeNode15,
+            treeNode16});
             this.areasTreeView.Size = new System.Drawing.Size(287, 278);
             this.areasTreeView.TabIndex = 0;
             // 
@@ -447,6 +452,26 @@
             this.cameraPage.Text = "Cameras";
             this.cameraPage.UseVisualStyleBackColor = true;
             // 
+            // pathsPage
+            // 
+            this.pathsPage.Controls.Add(this.pathsTree);
+            this.pathsPage.Location = new System.Drawing.Point(4, 22);
+            this.pathsPage.Name = "pathsPage";
+            this.pathsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.pathsPage.Size = new System.Drawing.Size(290, 284);
+            this.pathsPage.TabIndex = 8;
+            this.pathsPage.Text = "Paths";
+            this.pathsPage.UseVisualStyleBackColor = true;
+            this.pathsPage.Click += new System.EventHandler(this.pathsPage_Click);
+            // 
+            // pathsTree
+            // 
+            this.pathsTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pathsTree.Location = new System.Drawing.Point(3, 3);
+            this.pathsTree.Name = "pathsTree";
+            this.pathsTree.Size = new System.Drawing.Size(284, 278);
+            this.pathsTree.TabIndex = 0;
+            // 
             // LevelEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -478,6 +503,7 @@
             this.objectsPage.ResumeLayout(false);
             this.areasPage.ResumeLayout(false);
             this.startingPointsPage.ResumeLayout(false);
+            this.pathsPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -521,5 +547,7 @@
         private System.Windows.Forms.TabPage mappartsPage;
         private System.Windows.Forms.TabPage cameraPage;
         private System.Windows.Forms.TabPage miscPage;
+        private System.Windows.Forms.TabPage pathsPage;
+        private System.Windows.Forms.TreeView pathsTree;
     }
 }

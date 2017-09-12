@@ -67,6 +67,9 @@
     <Compile Include="GalaxyObject\CameraObject.cs" />
     <Compile Include="GalaxyObject\Light.cs" />
     <Compile Include="GalaxyObject\LevelObject.cs" />
+    <Compile Include="GalaxyObject\MapPartsObject.cs" />
+    <Compile Include="GalaxyObject\PathObject.cs" />
+    <Compile Include="GalaxyObject\PathPointObject.cs" />
     <Compile Include="GalaxyObject\StartObject.cs" />
     <Compile Include="LevelEditorForm.cs">
       <SubType>Form</SubType>

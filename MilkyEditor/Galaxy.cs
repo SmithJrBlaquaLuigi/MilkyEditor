@@ -72,7 +72,9 @@ namespace MilkyEditor
             {
                 string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
                 string areaObjFile = String.Format("/Stage/jmp/Placement/{0}/AreaObjInfo", layer);
+                string mapPartsFile = String.Format("/Stage/jmp/MapParts/{0}/MapPartsInfo", layer);
                 string startingObjFile = String.Format("/Stage/jmp/Start/{0}/StartInfo", layer);
+                string cameraAreaFile = String.Format("/Stage/jmp/Placement/{0}/CameraCubeInfo", layer);
                 string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
 
                 RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
@@ -83,7 +85,7 @@ namespace MilkyEditor
 
                 stageObjBcsv.Close();
 
-                // Map Objects
+                /* Map Objects */
 
                 Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
 
@@ -104,6 +106,26 @@ namespace MilkyEditor
                     startingPoints.Add(new StartObject(entry, layer, galaxyName));
 
                 startObjBcsv.Close();
+
+                /* Camera Areas */
+                Bcsv cameraCubeBcsv = new Bcsv(mapArchive.OpenFile(cameraAreaFile));
+
+                cameras = new List<CameraObject>();
+
+                foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
+                    cameras.Add(new CameraObject(entry, layer));
+
+                cameraCubeBcsv.Close();
+
+                /* Map Parts */
+                mapParts = new List<MapPartsObject>();
+
+                Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
+
+                foreach(Bcsv.Entry entry in mapPartsBcsv.Entries)
+                    mapParts.Add(new MapPartsObject(entry, layer));
+
+                mapPartsBcsv.Close();
 
                 /* 
                  * Area objects
@@ -160,6 +182,22 @@ namespace MilkyEditor
                     soundArchive.Close();
                 }
             }
+
+            /* Paths and Path Points */
+            // yay we re-open the map file
+            RarcFilesystem pathMapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
+
+            Bcsv pathInfoBcsv = new Bcsv(pathMapArchive.OpenFile("/Stage/jmp/Path/CommonPathInfo"));
+
+            paths = new List<PathObject>();
+
+            foreach (Bcsv.Entry entry in pathInfoBcsv.Entries)
+            {
+                PathObject path = new PathObject(entry);
+                path.AssignPathNodes(pathMapArchive);
+                paths.Add(path);
+            }
+
             gameFilesystem.Close();
         }
 
@@ -174,5 +212,8 @@ namespace MilkyEditor
         public List<LevelObject> objects;
         public List<StartObject> startingPoints;
         public List<AreaObject> areas;
+        public List<CameraObject> cameras;
+        public List<MapPartsObject> mapParts;
+        public List<PathObject> paths;
     }
 }
