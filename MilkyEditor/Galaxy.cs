@@ -165,6 +165,7 @@ namespace MilkyEditor
                 }
 
                 // type 2, sound
+                // we also get some objects out of it too
                 if (gameFilesystem.FileExists(soundFile))
                 {
                     RarcFilesystem soundArchive = new RarcFilesystem(gameFilesystem.OpenFile(soundFile));
@@ -177,6 +178,16 @@ namespace MilkyEditor
                             areas.Add(new AreaObject(entry, layer, 2));
 
                         soundBcsv.Close();
+                    }
+                    
+                    if (soundArchive.FileExists(mapObjFile))
+                    {
+                        Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
+
+                        foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
+                            objects.Add(new LevelObject(entry, layer));
+
+                        soundObjBcsv.Close();
                     }
 
                     soundArchive.Close();
@@ -197,6 +208,9 @@ namespace MilkyEditor
                 path.AssignPathNodes(pathMapArchive);
                 paths.Add(path);
             }
+
+            pathInfoBcsv.Close();
+            pathMapArchive.Close();
 
             gameFilesystem.Close();
         }

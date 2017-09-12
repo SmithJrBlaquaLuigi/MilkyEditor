@@ -206,6 +206,16 @@ namespace MilkyEditor
                     }
                 }
 
+                foreach (CameraObject camObj in galaxy.cameras)
+                {
+                    TreeNode node = new TreeNode(camObj.ToString())
+                    {
+                        Tag = camObj
+                    };
+
+                    areasTreeView.Nodes[3].Nodes.Add(node);
+                }
+
                 foreach(Zone zone in galaxy.zones)
                 {
                     if (zone.areas == null)

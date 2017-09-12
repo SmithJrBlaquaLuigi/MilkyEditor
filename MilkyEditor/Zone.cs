@@ -140,6 +140,16 @@ namespace MilkyEditor
                     soundBcsv.Close();
                 }
 
+                if (soundArchive.FileExists(mapObjFile))
+                {
+                    Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
+
+                    foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
+                        objects.Add(new LevelObject(entry, layer));
+
+                    soundObjBcsv.Close();
+                }
+
                 soundArchive.Close();
             }
 

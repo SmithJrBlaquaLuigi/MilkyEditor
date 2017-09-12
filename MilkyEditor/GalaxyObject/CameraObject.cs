@@ -51,6 +51,8 @@ namespace MilkyEditor.GalaxyObject
             ObjID = Convert.ToInt16(entry["Obj_ID"]);
         }
 
+        public override string ToString() { return String.Format("{0} [{1}]", name, Layer); }
+
         string name;
         int ID, ObjArg0, ObjArg1, ObjArg2, ObjArg3;
         int SWAppear, SW_A, SW_B, SWAwake;
