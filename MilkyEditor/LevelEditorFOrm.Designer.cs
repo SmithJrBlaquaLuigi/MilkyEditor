@@ -29,10 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelEditorForm));
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Map");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Light");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Sound");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Cameras");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Map");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Light");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sound");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Cameras");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Demo");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Debug");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("GeneralPos");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,7 +50,7 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.bottomStatusStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.leftTabPanel = new System.Windows.Forms.Panel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.galaxyControl = new System.Windows.Forms.TabControl();
             this.scenarioPage = new System.Windows.Forms.TabPage();
             this.scenarioEditorPanel = new System.Windows.Forms.Panel();
             this.scenarioEditingToolbar = new System.Windows.Forms.ToolStrip();
@@ -59,36 +62,44 @@
             this.lightPage = new System.Windows.Forms.TabPage();
             this.lightViewPanel = new System.Windows.Forms.Panel();
             this.lightDataTree = new System.Windows.Forms.TreeView();
-            this.glViewPanel = new System.Windows.Forms.Panel();
             this.objectsPage = new System.Windows.Forms.TabPage();
             this.objectsTreeView = new System.Windows.Forms.TreeView();
             this.areasPage = new System.Windows.Forms.TabPage();
             this.areasTreeView = new System.Windows.Forms.TreeView();
+            this.gravityPage = new System.Windows.Forms.TabPage();
             this.startingPointsPage = new System.Windows.Forms.TabPage();
             this.startingPointsTree = new System.Windows.Forms.TreeView();
             this.mappartsPage = new System.Windows.Forms.TabPage();
-            this.miscPage = new System.Windows.Forms.TabPage();
             this.cameraPage = new System.Windows.Forms.TabPage();
+            this.camerasTree = new System.Windows.Forms.TreeView();
             this.pathsPage = new System.Windows.Forms.TabPage();
             this.pathsTree = new System.Windows.Forms.TreeView();
+            this.miscPage = new System.Windows.Forms.TabPage();
+            this.miscTree = new System.Windows.Forms.TreeView();
+            this.glViewPanel = new System.Windows.Forms.Panel();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.introCameraEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.leftTabPanel.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.galaxyControl.SuspendLayout();
             this.scenarioPage.SuspendLayout();
             this.scenarioEditingToolbar.SuspendLayout();
             this.lightPage.SuspendLayout();
             this.objectsPage.SuspendLayout();
             this.areasPage.SuspendLayout();
             this.startingPointsPage.SuspendLayout();
+            this.cameraPage.SuspendLayout();
             this.pathsPage.SuspendLayout();
+            this.miscPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(823, 24);
@@ -198,30 +209,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.leftTabPanel.AutoScroll = true;
             this.leftTabPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.leftTabPanel.Controls.Add(this.tabControl1);
+            this.leftTabPanel.Controls.Add(this.galaxyControl);
             this.leftTabPanel.Location = new System.Drawing.Point(0, 52);
             this.leftTabPanel.Name = "leftTabPanel";
             this.leftTabPanel.Size = new System.Drawing.Size(301, 310);
             this.leftTabPanel.TabIndex = 3;
             // 
-            // tabControl1
+            // galaxyControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.galaxyControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.tabControl1.Controls.Add(this.scenarioPage);
-            this.tabControl1.Controls.Add(this.lightPage);
-            this.tabControl1.Controls.Add(this.objectsPage);
-            this.tabControl1.Controls.Add(this.areasPage);
-            this.tabControl1.Controls.Add(this.startingPointsPage);
-            this.tabControl1.Controls.Add(this.mappartsPage);
-            this.tabControl1.Controls.Add(this.cameraPage);
-            this.tabControl1.Controls.Add(this.pathsPage);
-            this.tabControl1.Controls.Add(this.miscPage);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(298, 310);
-            this.tabControl1.TabIndex = 0;
+            this.galaxyControl.Controls.Add(this.scenarioPage);
+            this.galaxyControl.Controls.Add(this.lightPage);
+            this.galaxyControl.Controls.Add(this.objectsPage);
+            this.galaxyControl.Controls.Add(this.areasPage);
+            this.galaxyControl.Controls.Add(this.gravityPage);
+            this.galaxyControl.Controls.Add(this.startingPointsPage);
+            this.galaxyControl.Controls.Add(this.mappartsPage);
+            this.galaxyControl.Controls.Add(this.cameraPage);
+            this.galaxyControl.Controls.Add(this.pathsPage);
+            this.galaxyControl.Controls.Add(this.miscPage);
+            this.galaxyControl.Location = new System.Drawing.Point(0, 0);
+            this.galaxyControl.Name = "galaxyControl";
+            this.galaxyControl.SelectedIndex = 0;
+            this.galaxyControl.Size = new System.Drawing.Size(298, 310);
+            this.galaxyControl.TabIndex = 0;
             // 
             // scenarioPage
             // 
@@ -231,7 +243,7 @@
             this.scenarioPage.Location = new System.Drawing.Point(4, 22);
             this.scenarioPage.Name = "scenarioPage";
             this.scenarioPage.Padding = new System.Windows.Forms.Padding(3);
-            this.scenarioPage.Size = new System.Drawing.Size(293, 284);
+            this.scenarioPage.Size = new System.Drawing.Size(290, 284);
             this.scenarioPage.TabIndex = 0;
             this.scenarioPage.Text = "Scenario";
             this.scenarioPage.UseVisualStyleBackColor = true;
@@ -258,7 +270,7 @@
             this.scenarioEditingToolbar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.scenarioEditingToolbar.Location = new System.Drawing.Point(3, 3);
             this.scenarioEditingToolbar.Name = "scenarioEditingToolbar";
-            this.scenarioEditingToolbar.Size = new System.Drawing.Size(287, 22);
+            this.scenarioEditingToolbar.Size = new System.Drawing.Size(284, 22);
             this.scenarioEditingToolbar.TabIndex = 1;
             this.scenarioEditingToolbar.Text = "toolStrip2";
             // 
@@ -316,7 +328,7 @@
             this.lightPage.Location = new System.Drawing.Point(4, 22);
             this.lightPage.Name = "lightPage";
             this.lightPage.Padding = new System.Windows.Forms.Padding(3);
-            this.lightPage.Size = new System.Drawing.Size(293, 284);
+            this.lightPage.Size = new System.Drawing.Size(290, 284);
             this.lightPage.TabIndex = 1;
             this.lightPage.Text = "Light";
             this.lightPage.UseVisualStyleBackColor = true;
@@ -342,24 +354,13 @@
             this.lightDataTree.TabIndex = 0;
             this.lightDataTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.LightDataTree_AfterSelect);
             // 
-            // glViewPanel
-            // 
-            this.glViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.glViewPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.glViewPanel.Location = new System.Drawing.Point(307, 52);
-            this.glViewPanel.Name = "glViewPanel";
-            this.glViewPanel.Size = new System.Drawing.Size(516, 310);
-            this.glViewPanel.TabIndex = 4;
-            // 
             // objectsPage
             // 
             this.objectsPage.Controls.Add(this.objectsTreeView);
             this.objectsPage.Location = new System.Drawing.Point(4, 22);
             this.objectsPage.Name = "objectsPage";
             this.objectsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.objectsPage.Size = new System.Drawing.Size(293, 284);
+            this.objectsPage.Size = new System.Drawing.Size(290, 284);
             this.objectsPage.TabIndex = 2;
             this.objectsPage.Text = "Objects";
             this.objectsPage.UseVisualStyleBackColor = true;
@@ -369,7 +370,7 @@
             this.objectsTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectsTreeView.Location = new System.Drawing.Point(3, 3);
             this.objectsTreeView.Name = "objectsTreeView";
-            this.objectsTreeView.Size = new System.Drawing.Size(287, 278);
+            this.objectsTreeView.Size = new System.Drawing.Size(284, 278);
             this.objectsTreeView.TabIndex = 0;
             // 
             // areasPage
@@ -378,7 +379,7 @@
             this.areasPage.Location = new System.Drawing.Point(4, 22);
             this.areasPage.Name = "areasPage";
             this.areasPage.Padding = new System.Windows.Forms.Padding(3);
-            this.areasPage.Size = new System.Drawing.Size(293, 284);
+            this.areasPage.Size = new System.Drawing.Size(290, 284);
             this.areasPage.TabIndex = 3;
             this.areasPage.Text = "Areas";
             this.areasPage.UseVisualStyleBackColor = true;
@@ -388,21 +389,31 @@
             this.areasTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.areasTreeView.Location = new System.Drawing.Point(3, 3);
             this.areasTreeView.Name = "areasTreeView";
-            treeNode13.Name = "MapNode";
-            treeNode13.Text = "Map";
-            treeNode14.Name = "LightNode";
-            treeNode14.Text = "Light";
-            treeNode15.Name = "SoundNode";
-            treeNode15.Text = "Sound";
-            treeNode16.Name = "cameraNode";
-            treeNode16.Text = "Cameras";
+            treeNode1.Name = "MapNode";
+            treeNode1.Text = "Map";
+            treeNode2.Name = "LightNode";
+            treeNode2.Text = "Light";
+            treeNode3.Name = "SoundNode";
+            treeNode3.Text = "Sound";
+            treeNode4.Name = "cameraNode";
+            treeNode4.Text = "Cameras";
             this.areasTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14,
-            treeNode15,
-            treeNode16});
-            this.areasTreeView.Size = new System.Drawing.Size(287, 278);
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4});
+            this.areasTreeView.Size = new System.Drawing.Size(284, 278);
             this.areasTreeView.TabIndex = 0;
+            // 
+            // gravityPage
+            // 
+            this.gravityPage.Location = new System.Drawing.Point(4, 22);
+            this.gravityPage.Name = "gravityPage";
+            this.gravityPage.Padding = new System.Windows.Forms.Padding(3);
+            this.gravityPage.Size = new System.Drawing.Size(290, 284);
+            this.gravityPage.TabIndex = 9;
+            this.gravityPage.Text = "Gravity";
+            this.gravityPage.UseVisualStyleBackColor = true;
             // 
             // startingPointsPage
             // 
@@ -410,7 +421,7 @@
             this.startingPointsPage.Location = new System.Drawing.Point(4, 22);
             this.startingPointsPage.Name = "startingPointsPage";
             this.startingPointsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.startingPointsPage.Size = new System.Drawing.Size(293, 284);
+            this.startingPointsPage.Size = new System.Drawing.Size(290, 284);
             this.startingPointsPage.TabIndex = 4;
             this.startingPointsPage.Text = "Start";
             this.startingPointsPage.UseVisualStyleBackColor = true;
@@ -420,7 +431,7 @@
             this.startingPointsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.startingPointsTree.Location = new System.Drawing.Point(3, 3);
             this.startingPointsTree.Name = "startingPointsTree";
-            this.startingPointsTree.Size = new System.Drawing.Size(287, 278);
+            this.startingPointsTree.Size = new System.Drawing.Size(284, 278);
             this.startingPointsTree.TabIndex = 0;
             // 
             // mappartsPage
@@ -428,29 +439,28 @@
             this.mappartsPage.Location = new System.Drawing.Point(4, 22);
             this.mappartsPage.Name = "mappartsPage";
             this.mappartsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.mappartsPage.Size = new System.Drawing.Size(293, 284);
+            this.mappartsPage.Size = new System.Drawing.Size(290, 284);
             this.mappartsPage.TabIndex = 5;
             this.mappartsPage.Text = "Map Parts";
             this.mappartsPage.UseVisualStyleBackColor = true;
             // 
-            // miscPage
-            // 
-            this.miscPage.Location = new System.Drawing.Point(4, 22);
-            this.miscPage.Name = "miscPage";
-            this.miscPage.Padding = new System.Windows.Forms.Padding(3);
-            this.miscPage.Size = new System.Drawing.Size(293, 284);
-            this.miscPage.TabIndex = 6;
-            this.miscPage.Text = "Misc";
-            this.miscPage.UseVisualStyleBackColor = true;
-            // 
             // cameraPage
             // 
+            this.cameraPage.Controls.Add(this.camerasTree);
             this.cameraPage.Location = new System.Drawing.Point(4, 22);
             this.cameraPage.Name = "cameraPage";
-            this.cameraPage.Size = new System.Drawing.Size(293, 284);
+            this.cameraPage.Size = new System.Drawing.Size(290, 284);
             this.cameraPage.TabIndex = 7;
             this.cameraPage.Text = "Cameras";
             this.cameraPage.UseVisualStyleBackColor = true;
+            // 
+            // camerasTree
+            // 
+            this.camerasTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.camerasTree.Location = new System.Drawing.Point(0, 0);
+            this.camerasTree.Name = "camerasTree";
+            this.camerasTree.Size = new System.Drawing.Size(290, 284);
+            this.camerasTree.TabIndex = 0;
             // 
             // pathsPage
             // 
@@ -471,6 +481,61 @@
             this.pathsTree.Name = "pathsTree";
             this.pathsTree.Size = new System.Drawing.Size(284, 278);
             this.pathsTree.TabIndex = 0;
+            // 
+            // miscPage
+            // 
+            this.miscPage.Controls.Add(this.miscTree);
+            this.miscPage.Location = new System.Drawing.Point(4, 22);
+            this.miscPage.Name = "miscPage";
+            this.miscPage.Padding = new System.Windows.Forms.Padding(3);
+            this.miscPage.Size = new System.Drawing.Size(290, 284);
+            this.miscPage.TabIndex = 6;
+            this.miscPage.Text = "Misc";
+            this.miscPage.UseVisualStyleBackColor = true;
+            // 
+            // miscTree
+            // 
+            this.miscTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.miscTree.Location = new System.Drawing.Point(3, 3);
+            this.miscTree.Name = "miscTree";
+            treeNode5.Name = "demoNode";
+            treeNode5.Text = "Demo";
+            treeNode6.Name = "debugNode";
+            treeNode6.Text = "Debug";
+            treeNode7.Name = "genPosNode";
+            treeNode7.Text = "GeneralPos";
+            this.miscTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode5,
+            treeNode6,
+            treeNode7});
+            this.miscTree.Size = new System.Drawing.Size(284, 278);
+            this.miscTree.TabIndex = 0;
+            // 
+            // glViewPanel
+            // 
+            this.glViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.glViewPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.glViewPanel.Location = new System.Drawing.Point(307, 52);
+            this.glViewPanel.Name = "glViewPanel";
+            this.glViewPanel.Size = new System.Drawing.Size(516, 310);
+            this.glViewPanel.TabIndex = 4;
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.introCameraEditorToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // introCameraEditorToolStripMenuItem
+            // 
+            this.introCameraEditorToolStripMenuItem.Name = "introCameraEditorToolStripMenuItem";
+            this.introCameraEditorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.introCameraEditorToolStripMenuItem.Text = "Intro Camera Editor";
+            this.introCameraEditorToolStripMenuItem.Click += new System.EventHandler(this.introCameraEditorToolStripMenuItem_Click);
             // 
             // LevelEditorForm
             // 
@@ -494,7 +559,7 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.leftTabPanel.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.galaxyControl.ResumeLayout(false);
             this.scenarioPage.ResumeLayout(false);
             this.scenarioPage.PerformLayout();
             this.scenarioEditingToolbar.ResumeLayout(false);
@@ -503,7 +568,9 @@
             this.objectsPage.ResumeLayout(false);
             this.areasPage.ResumeLayout(false);
             this.startingPointsPage.ResumeLayout(false);
+            this.cameraPage.ResumeLayout(false);
             this.pathsPage.ResumeLayout(false);
+            this.miscPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,7 +593,7 @@
         private System.Windows.Forms.ToolStripStatusLabel bottomStatusStripLabel;
         private System.Windows.Forms.Panel leftTabPanel;
         private System.Windows.Forms.Panel glViewPanel;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl galaxyControl;
         private System.Windows.Forms.TabPage scenarioPage;
         private System.Windows.Forms.TabPage lightPage;
         private System.Windows.Forms.TreeView scenarioTreeView;
@@ -549,5 +616,10 @@
         private System.Windows.Forms.TabPage miscPage;
         private System.Windows.Forms.TabPage pathsPage;
         private System.Windows.Forms.TreeView pathsTree;
+        private System.Windows.Forms.TabPage gravityPage;
+        private System.Windows.Forms.TreeView miscTree;
+        private System.Windows.Forms.TreeView camerasTree;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem introCameraEditorToolStripMenuItem;
     }
 }

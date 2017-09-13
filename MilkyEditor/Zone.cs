@@ -1,5 +1,6 @@
 ﻿using MilkyEditor.Filesystem;
 using MilkyEditor.GalaxyObject;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace MilkyEditor
     class Zone
     {
         // zones don't use scenario data
-        public Zone(string name, string layer, ExternalFilesystem gameFilesystem)
+        public Zone(string name, Vector3 PositionOffset, Vector3 RotationOffset, string layer, ExternalFilesystem gameFilesystem)
         {
             ZoneName = name;
             List<string> layers = new List<string>();

@@ -1,6 +1,7 @@
 ﻿using MilkyEditor.Filesystem;
 using MilkyEditor.GalaxyObject;
 using MilkyEditor.Widgets;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -112,7 +113,7 @@ namespace MilkyEditor
             // this means that the selected level is just a zone
             else
             {
-                zone = new Zone(galaxyName, layers[0], gameFilesystem);
+                zone = new Zone(galaxyName, new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), layers[0], gameFilesystem);
 
                 if (zone.lights != null)
                 {
@@ -394,6 +395,14 @@ namespace MilkyEditor
         private void pathsPage_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void introCameraEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RarcFilesystem rarc = new RarcFilesystem(gameFilesystem.OpenFile("/StageData/BigGalaxy/BigGalaxyMap.arc"));
+
+            // HARDCODED :D
+            CANM canm = new CANM(rarc.OpenFile("/Stage/camera/StartScenario1.canm"));
         }
     }
 }

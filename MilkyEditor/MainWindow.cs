@@ -19,6 +19,14 @@ namespace MilkyEditor
             InitializeComponent();
 
             Bcsv.PopulateHashtable();
+
+            nameToSimpleName = new Dictionary<string, string>();
+
+            using (StreamReader sr = File.OpenText(Properties.Resources.SimpleGalaxyNames))
+            {
+                string[] splitLine = sr.ReadLine().Split('=');
+                nameToSimpleName.Add(splitLine[0], splitLine[1]);
+            }
         }
 
         private void selectFolderButton_Click(object sender, EventArgs e)
@@ -29,6 +37,9 @@ namespace MilkyEditor
             };
             // storing the missing folders in a string
             string missingFolders = "";
+
+            if (Properties.Settings.Default.PreviousFolder != "")
+                selectFolderDialog.SelectedPath = Properties.Settings.Default.PreviousFolder;
 
             if (selectFolderDialog.ShowDialog() == DialogResult.OK)
             {
@@ -46,6 +57,8 @@ namespace MilkyEditor
                 }
 
                 chosenFolderPath = selectFolderDialog.SelectedPath;
+                Properties.Settings.Default.PreviousFolder = chosenFolderPath;
+                Properties.Settings.Default.Save();
 
                 FillTreeNodes();
             }
@@ -72,8 +85,13 @@ namespace MilkyEditor
                 // means it's a galaxy, let's open the map file
                 if (gameFilesystem.FileExists(scenarioName))
                 {
+                    string nodeName = galaxyName;
+
+                    if (nameToSimpleName.ContainsKey(galaxyName))
+                        nodeName = nameToSimpleName[galaxyName];
+
                     // add the root node
-                    TreeNode galaxyNode = new TreeNode(galaxyName)
+                    TreeNode galaxyNode = new TreeNode(nodeName)
                     {
                         Tag = galaxyName
                     };
@@ -91,7 +109,12 @@ namespace MilkyEditor
                     // go through each entry in the bcsv, when each one represents the zones
                     foreach(Bcsv.Entry entry in zoneListInfoFile.Entries)
                     {
-                        TreeNode stageNode = new TreeNode((string)entry["ZoneName"])
+                        string zoneNodeName = Convert.ToString(entry["ZoneName"]);
+
+                        if (nameToSimpleName.ContainsKey(zoneNodeName))
+                            zoneNodeName = nameToSimpleName[zoneNodeName];
+
+                        TreeNode stageNode = new TreeNode(zoneNodeName)
                         {
                             Tag = (string)entry["ZoneName"]
                         };
@@ -156,5 +179,13 @@ namespace MilkyEditor
 
         ExternalFilesystem gameFilesystem;
         string chosenFolderPath;
+
+        Dictionary<string, string> nameToSimpleName;
+
+        private void hashGenButton_Click(object sender, EventArgs e)
+        {
+            HashGenerator hashGen = new HashGenerator();
+            hashGen.Show();
+        }
     }
 }

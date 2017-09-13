@@ -1,0 +1,2 @@
+﻿AbekobeGalaxy=Rightside Down Galaxy
+BigGalaxy=Supermassive Galaxy

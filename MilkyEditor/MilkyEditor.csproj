@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Filesystem\Bcsv.cs" />
     <Compile Include="Filesystem\BigEndian.cs" />
+    <Compile Include="Filesystem\CANM.cs" />
     <Compile Include="Filesystem\Compression.cs" />
     <Compile Include="Filesystem\ExternalFilesystem.cs" />
     <Compile Include="Filesystem\FilesystemBase.cs" />
@@ -72,6 +73,12 @@
     <Compile Include="GalaxyObject\PathObject.cs" />
     <Compile Include="GalaxyObject\PathPointObject.cs" />
     <Compile Include="GalaxyObject\StartObject.cs" />
+    <Compile Include="HashGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HashGenerator.Designer.cs">
+      <DependentUpon>HashGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="LevelEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +102,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Zone.cs" />
+    <EmbeddedResource Include="HashGenerator.resx">
+      <DependentUpon>HashGenerator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LevelEditorFOrm.resx">
       <DependentUpon>LevelEditorForm.cs</DependentUpon>
     </EmbeddedResource>

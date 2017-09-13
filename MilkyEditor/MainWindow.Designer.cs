@@ -29,28 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.mainWindowToolstrip = new System.Windows.Forms.ToolStrip();
             this.selectFolderButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openGalaxyButton = new System.Windows.Forms.ToolStripButton();
             this.bcsvEditorButton = new System.Windows.Forms.ToolStripButton();
             this.galaxyListTree = new System.Windows.Forms.TreeView();
-            this.toolStrip1.SuspendLayout();
+            this.hashGenButton = new System.Windows.Forms.ToolStripButton();
+            this.mainWindowToolstrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // toolStrip1
+            // mainWindowToolstrip
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainWindowToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectFolderButton,
             this.toolStripSeparator1,
             this.openGalaxyButton,
-            this.bcsvEditorButton});
-            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(493, 23);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this.bcsvEditorButton,
+            this.hashGenButton});
+            this.mainWindowToolstrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.mainWindowToolstrip.Location = new System.Drawing.Point(0, 0);
+            this.mainWindowToolstrip.Name = "mainWindowToolstrip";
+            this.mainWindowToolstrip.Size = new System.Drawing.Size(493, 23);
+            this.mainWindowToolstrip.TabIndex = 0;
+            this.mainWindowToolstrip.Text = "toolStrip1";
             // 
             // selectFolderButton
             // 
@@ -65,7 +67,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
             // 
             // openGalaxyButton
             // 
@@ -74,7 +76,7 @@
             this.openGalaxyButton.Image = ((System.Drawing.Image)(resources.GetObject("openGalaxyButton.Image")));
             this.openGalaxyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openGalaxyButton.Name = "openGalaxyButton";
-            this.openGalaxyButton.Size = new System.Drawing.Size(77, 22);
+            this.openGalaxyButton.Size = new System.Drawing.Size(77, 19);
             this.openGalaxyButton.Text = "Open Galaxy";
             this.openGalaxyButton.Click += new System.EventHandler(this.openGalaxyButton_Click);
             // 
@@ -85,7 +87,7 @@
             this.bcsvEditorButton.Image = ((System.Drawing.Image)(resources.GetObject("bcsvEditorButton.Image")));
             this.bcsvEditorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bcsvEditorButton.Name = "bcsvEditorButton";
-            this.bcsvEditorButton.Size = new System.Drawing.Size(73, 22);
+            this.bcsvEditorButton.Size = new System.Drawing.Size(73, 19);
             this.bcsvEditorButton.Text = "BCSV Editor";
             // 
             // galaxyListTree
@@ -98,18 +100,28 @@
             this.galaxyListTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.galaxyListTree_NodeMouseClick);
             this.galaxyListTree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.galaxyListTree_NodeMouseDoubleClick);
             // 
+            // hashGenButton
+            // 
+            this.hashGenButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.hashGenButton.Image = ((System.Drawing.Image)(resources.GetObject("hashGenButton.Image")));
+            this.hashGenButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.hashGenButton.Name = "hashGenButton";
+            this.hashGenButton.Size = new System.Drawing.Size(93, 19);
+            this.hashGenButton.Text = "Hash Generator";
+            this.hashGenButton.Click += new System.EventHandler(this.hashGenButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(493, 287);
             this.Controls.Add(this.galaxyListTree);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.mainWindowToolstrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "Milky Editor v0.1";
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.mainWindowToolstrip.ResumeLayout(false);
+            this.mainWindowToolstrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -117,12 +129,13 @@
 
         #endregion
 
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip mainWindowToolstrip;
         private System.Windows.Forms.ToolStripButton selectFolderButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton bcsvEditorButton;
         private System.Windows.Forms.TreeView galaxyListTree;
         private System.Windows.Forms.ToolStripButton openGalaxyButton;
+        private System.Windows.Forms.ToolStripButton hashGenButton;
     }
 }
 

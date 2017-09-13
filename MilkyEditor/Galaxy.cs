@@ -1,5 +1,6 @@
 ﻿using MilkyEditor.Filesystem;
 using MilkyEditor.GalaxyObject;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,13 @@ namespace MilkyEditor
 {
     class Galaxy
     { 
+        /*
+         * This class is in charge of loading multiple things
+         * It loads all of the layers needed for the galaxy
+         * It also appends the zones used in the galaxy to the instnace of this class
+         */
         public Galaxy(string galaxyName, List<string> layers, ExternalFilesystem gameFilesystem)
         {
-            foreach (string layer in layers)
-                Console.WriteLine("Gotta load " + layer);
-
             /*
              * Scenario data
              */
@@ -82,7 +85,21 @@ namespace MilkyEditor
                 Bcsv stageObjBcsv = new Bcsv(mapArchive.OpenFile(stageInfoFile));
 
                 foreach (Bcsv.Entry entry in stageObjBcsv.Entries)
-                    zones.Add(new Zone(Convert.ToString(entry["name"]), layer, gameFilesystem));
+                {
+                    float x = Convert.ToSingle(entry["pos_x"]);
+                    float y = Convert.ToSingle(entry["pos_y"]);
+                    float z = Convert.ToSingle(entry["pos_z"]);
+
+                    Vector3 PositionOffset = new Vector3(x, y, z);
+
+                    float xRot = Convert.ToSingle(entry["dir_x"]);
+                    float yRot = Convert.ToSingle(entry["dir_y"]);
+                    float zRot = Convert.ToSingle(entry["dir_z"]);
+
+                    Vector3 RotationOffset = new Vector3(xRot, yRot, zRot);
+
+                    zones.Add(new Zone(Convert.ToString(entry["name"]), PositionOffset, RotationOffset, layer, gameFilesystem));
+                }
 
                 stageObjBcsv.Close();
 
@@ -221,6 +238,9 @@ namespace MilkyEditor
             }
 
             pathInfoBcsv.Close();
+
+            /* BCAM File for cameras */
+            Bcsv bcamBcsv = new Bcsv(pathMapArchive.OpenFile("/Stage/camera/CameraParam.bcam"));
             pathMapArchive.Close();
 
             gameFilesystem.Close();
