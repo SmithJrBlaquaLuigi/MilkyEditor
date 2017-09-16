@@ -40,14 +40,18 @@ namespace MilkyEditor
             {
                 string lightBcsvFile = String.Format("/Stage/csv/{0}Light.bcsv", name);
                 RarcFilesystem lightArchive = new RarcFilesystem(gameFilesystem.OpenFile(lightFile));
-                Bcsv lightBcsv = new Bcsv(lightArchive.OpenFile(lightBcsvFile));
+                if (lightArchive.FileExists(lightBcsvFile))
+                {
+                    Bcsv lightBcsv = new Bcsv(lightArchive.OpenFile(lightBcsvFile));
 
-                lights = new List<Light>();
-                foreach (Bcsv.Entry entry in lightBcsv.Entries)
-                    lights.Add(new Light(entry, name));
+                    lights = new List<Light>();
+                    foreach (Bcsv.Entry entry in lightBcsv.Entries)
+                        lights.Add(new Light(entry, name));
+
+                    lightBcsv.Close();
+                }
 
                 lightArchive.Close();
-                lightBcsv.Close();
             }
 
             string mapFile = String.Format("/StageData/{0}/{0}Map.arc", name);
