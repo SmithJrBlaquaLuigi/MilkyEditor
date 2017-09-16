@@ -14,8 +14,10 @@ namespace MilkyEditor.GalaxyObject
 
         }
 
-        public MapPartsObject(Bcsv.Entry entry, string layer)
+        public MapPartsObject(Bcsv.Entry entry, string layer, int curID)
         {
+            uniqueID = curID;
+
             name = Convert.ToString(entry["name"]);
             ID = Convert.ToInt32(entry["l_id"]);
             MoveConditionType = Convert.ToInt32(entry["MoveConditionType"]);
@@ -83,5 +85,6 @@ namespace MilkyEditor.GalaxyObject
         int CastID, ViewGroupID;
         short ShapeModelNo, PathID, ClippingGroupID, GroupID;
         short DemoGroupID, MapPartsID, ObjID, ParentID;
+        int uniqueID;
     }
 }

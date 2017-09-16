@@ -1,13 +1,8 @@
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe.config
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.exe
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\MilkyEditor.pdb
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.Compatibility.dll
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.dll
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.pdb
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.xml
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.dll.config
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csprojResolveAssemblyReference.cache
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.MilkyEditor.exe.config
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.MainWindow.resources
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.Properties.Resources.resources
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.GenerateResource.Cache
@@ -16,6 +11,11 @@ C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\ob
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.pdb
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.LevelEditorForm.resources
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.dll
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.pdb
-C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.xml
 C:\Users\shibbs\documents\visual studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.HashGenerator.resources
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.Compatibility.dll
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.pdb
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.xml
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.dll.config
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.pdb
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\bin\Debug\OpenTK.GLControl.xml
+C:\Users\shibbs\Documents\Visual Studio 2017\Projects\MilkyEditor\MilkyEditor\obj\Debug\MilkyEditor.csproj.MilkyEditor.exe.config

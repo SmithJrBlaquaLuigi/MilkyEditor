@@ -1,4 +1,7 @@
 ﻿using MilkyEditor.Filesystem;
+using MilkyEditor.Rendering;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace MilkyEditor.GalaxyObject
 {
-    class LevelObject
+    class LevelObject : AbstractObject
     {
         public LevelObject()
         {
 
         }
 
-        public LevelObject(Bcsv.Entry entry, string layer)
+        public LevelObject(Bcsv.Entry entry, string layer, int id)
         {
             Layer = layer;
 
@@ -67,7 +70,56 @@ namespace MilkyEditor.GalaxyObject
             GeneratorID = Convert.ToInt16(entry["GeneratorID"]);
         }
 
+        public void Render(RenderMode mode, Vector3 posBias, Vector3 rotBias, ExternalFilesystem fs = null)
+        {
+            Vector3 pos = new Vector3(X, Y, Z);
+            Vector3 finalPos = pos + posBias;
+
+            GL.PushMatrix();
+            GL.Translate(finalPos);
+            GL.Rotate(XRot + rotBias.X, 1f, 0f, 0f);
+            GL.Rotate(YRot + rotBias.Y, 0f, 1f, 0f);
+            GL.Rotate(ZRot + rotBias.Z, 0f, 0f, 1f);
+
+            if (usesModel && fs != null)
+            {
+                string objFile = String.Format("/ObjectData/{0}.arc", Name);
+                string bmdFile = String.Format("/{0}/{0}.bdl", Name);
+
+                RarcFilesystem rarc = new RarcFilesystem(fs.OpenFile(objFile));
+                Bmd bmd = new Bmd(rarc.OpenFile(bmdFile));
+
+                GL.Scale(XScale, YScale, ZScale);
+                DrawBDL(bmd);
+
+                rarc.Close();
+                bmd.Close();
+            }
+            else
+            {
+                GL.Scale(1f, 1f, 1f);
+                DrawCube(0f, 1f, 0f, true, true, false, mode);
+            }
+
+            GL.PopMatrix();
+        }
+
         public override string ToString() { return String.Format("{0} [{1}]", Name, Layer); }
+
+        public void SetModelExistFlag(ExternalFilesystem fs)
+        {
+            string objFile = String.Format("/ObjectData/{0}.arc", Name);
+            string bmdFile = String.Format("/{0}/{0}.bdl", Name);
+            if (fs.FileExists(objFile))
+            {
+                RarcFilesystem rarc = new RarcFilesystem(fs.OpenFile(objFile));
+
+                if (rarc.FileExists(bmdFile))
+                    usesModel = true;
+
+                rarc.Close();
+            }
+        }
 
         string Name;
         int ID;
@@ -79,5 +131,7 @@ namespace MilkyEditor.GalaxyObject
         short ShapeModelNo, PathID, ClippingID, GroupID, DemoGroupID, MapPartsID, ObjID, GeneratorID;
 
         string Layer;
+        int uniqueID;
+        bool usesModel;
     }
 }

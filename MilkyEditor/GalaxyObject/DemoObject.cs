@@ -14,8 +14,9 @@ namespace MilkyEditor.GalaxyObject
 
         }
 
-        public DemoObject(Bcsv.Entry entry, string layer)
+        public DemoObject(Bcsv.Entry entry, string layer, int curID)
         {
+            uniqueID = curID;
             Layer = layer;
 
             name = Convert.ToString(entry["name"]);
@@ -47,5 +48,6 @@ namespace MilkyEditor.GalaxyObject
         int ID, SWAppear, SWDead, SW_A, SW_B, DemoSkip;
         float X, Y, Z, XRot, YRot, ZRot, XScale, YScale, ZScale;
         string Layer;
+        int uniqueID;
     }
 }

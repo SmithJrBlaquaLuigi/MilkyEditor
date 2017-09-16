@@ -12,9 +12,14 @@ namespace MilkyEditor
     class Zone
     {
         // zones don't use scenario data
-        public Zone(string name, Vector3 PositionOffset, Vector3 RotationOffset, string layer, ExternalFilesystem gameFilesystem)
+        public Zone(string name, Vector3 PositionOffset, Vector3 RotationOffset, string layer, ExternalFilesystem gameFilesystem, int curID)
         {
+            filesystem = gameFilesystem;
+            posBias = PositionOffset;
+            rotBias = RotationOffset;
+
             ZoneName = name;
+            id = curID;
             List<string> layers = new List<string>();
 
             if (layer != "Common")
@@ -74,7 +79,11 @@ namespace MilkyEditor
                 objects = new List<LevelObject>();
 
                 foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
-                    objects.Add(new LevelObject(entry, layer));
+                {
+                    LevelObject obj = new LevelObject(entry, layer, id++);
+                    obj.SetModelExistFlag(gameFilesystem);
+                    objects.Add(obj);
+                }
 
                 mapObjBcsv.Close();
 
@@ -83,7 +92,7 @@ namespace MilkyEditor
                 startingPoints = new List<StartObject>();
 
                 foreach (Bcsv.Entry entry in startObjBcsv.Entries)
-                    startingPoints.Add(new StartObject(entry, layer, name));
+                    startingPoints.Add(new StartObject(entry, layer, name, id++));
 
                 startObjBcsv.Close();
 
@@ -93,7 +102,7 @@ namespace MilkyEditor
                 cameras = new List<CameraObject>();
 
                 foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
-                    cameras.Add(new CameraObject(entry, layer));
+                    cameras.Add(new CameraObject(entry, layer, id++));
 
                 cameraCubeBcsv.Close();
 
@@ -103,7 +112,7 @@ namespace MilkyEditor
                 Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
 
                 foreach (Bcsv.Entry entry in mapPartsBcsv.Entries)
-                    mapParts.Add(new MapPartsObject(entry, layer));
+                    mapParts.Add(new MapPartsObject(entry, layer, id++));
 
                 mapPartsBcsv.Close();
 
@@ -113,7 +122,7 @@ namespace MilkyEditor
                 demos = new List<DemoObject>();
 
                 foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
-                    demos.Add(new DemoObject(entry, layer));
+                    demos.Add(new DemoObject(entry, layer, id++));
 
                 demoInfoBcsv.Close();
 
@@ -130,7 +139,7 @@ namespace MilkyEditor
 
                 // type 0, map
                 foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
-                    areas.Add(new AreaObject(entry, layer, 0));
+                    areas.Add(new AreaObject(entry, layer, 0, id++));
 
                 mapAreaBcsv.Close();
 
@@ -145,7 +154,7 @@ namespace MilkyEditor
                         Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
 
                         foreach (Bcsv.Entry entry in designBcsv.Entries)
-                            areas.Add(new AreaObject(entry, layer, 1));
+                            areas.Add(new AreaObject(entry, layer, 1, id++));
 
                         designBcsv.Close();
                     }
@@ -163,7 +172,7 @@ namespace MilkyEditor
                         Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
 
                         foreach (Bcsv.Entry entry in soundBcsv.Entries)
-                            areas.Add(new AreaObject(entry, layer, 2));
+                            areas.Add(new AreaObject(entry, layer, 2, id++));
 
                         soundBcsv.Close();
                     }
@@ -173,7 +182,7 @@ namespace MilkyEditor
                         Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
 
                         foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
-                            objects.Add(new LevelObject(entry, layer));
+                            objects.Add(new LevelObject(entry, layer, id++));
 
                         soundObjBcsv.Close();
                     }
@@ -186,6 +195,8 @@ namespace MilkyEditor
             gameFilesystem.Close();
         }
 
+        public int ReturnUnique() { return id; }
+
         public List<Light> lights;
         public List<LevelObject> objects;
         public List<DemoObject> demos;
@@ -194,6 +205,10 @@ namespace MilkyEditor
         public List<CameraObject> cameras;
         public List<MapPartsObject> mapParts;
 
+        int id;
         string ZoneName;
+        public Vector3 posBias;
+        public Vector3 rotBias;
+        public ExternalFilesystem filesystem;
     }
 }

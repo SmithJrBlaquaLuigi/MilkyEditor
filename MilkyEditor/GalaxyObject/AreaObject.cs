@@ -20,8 +20,9 @@ namespace MilkyEditor.GalaxyObject
          * Type 2: Sound Area (Sound.arc)
          */
 
-        public AreaObject(Bcsv.Entry entry, string layer, int areaType)
+        public AreaObject(Bcsv.Entry entry, string layer, int areaType, int curID)
         {
+            uniqueID = curID;
             Layer = layer;
             Type = areaType;
 
@@ -78,6 +79,7 @@ namespace MilkyEditor.GalaxyObject
 
         string Layer;
         public int Type;
+        int uniqueID;
 
         public override string ToString() { return String.Format("{0} [{1}]", Name, Layer); }
     }

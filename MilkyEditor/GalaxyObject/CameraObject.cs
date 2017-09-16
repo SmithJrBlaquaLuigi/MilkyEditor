@@ -14,8 +14,9 @@ namespace MilkyEditor.GalaxyObject
 
         }
 
-        public CameraObject(Bcsv.Entry entry, string layer)
+        public CameraObject(Bcsv.Entry entry, string layer, int curID)
         {
+            uniqueID = curID;
             Layer = layer;
             name = Convert.ToString(entry["name"]);
             ID = Convert.ToInt32(entry["l_id"]);
@@ -62,6 +63,7 @@ namespace MilkyEditor.GalaxyObject
         short AreaShapeNo, MapPartsID, ObjID;
 
         string Layer;
+        int uniqueID;
     }
 
     /*
@@ -79,21 +81,37 @@ namespace MilkyEditor.GalaxyObject
             Entry = entry;
 
             Version = Convert.ToInt32(entry["version"]);
-            CamEndint = Convert.ToInt32(entry["gflag.camendint"]);
-            EnableEndErpFrame = Convert.ToInt16(entry["gflag.enableEndErpFrame"]);
+
+            if (DoesFieldExist("gflag.camendint"))
+                CamEndint = Convert.ToInt32(entry["gflag.camendint"]);
+            
+            if (DoesFieldExist("gflag.enableEndErpFrame"))
+                EnableEndErpFrame = Convert.ToInt16(entry["gflag.enableEndErpFrame"]);
+
             GFlagThru = Convert.ToInt32(entry["gflag.thru"]);
-            num2 = Convert.ToInt32(entry["num2"]);
+
+            // FileSelect crash
+            if (DoesFieldExist("num2"))
+                num2 = Convert.ToInt32(entry["num2"]);
+
             num1 = Convert.ToInt32(entry["num1"]);
 
             AngleB = Convert.ToSingle(entry["angleB"]);
             AngleA = Convert.ToSingle(entry["angleA"]);
             Distance = Convert.ToSingle(entry["dist"]);
 
-            SubjectiveOff = Convert.ToInt32(entry["flag.subjectiveoff"]);
+            if (DoesFieldExist("flag.subjectiveoff"))
+                SubjectiveOff = Convert.ToInt32(entry["flag.subjectiveoff"]);
 
-            VPanAxisX = Convert.ToSingle(entry["vpanaxis.x"]);
-            VPanAxisY = Convert.ToSingle(entry["vpanaxis.y"]);
-            VPanAxisZ = Convert.ToSingle(entry["vpanaxis.z"]);
+            if (DoesFieldExist("flag.collisionoff"))
+                CollisionOff = Convert.ToInt32(entry["flag.collisionoff"]);
+
+            if (DoesFieldExist("flag.nofovy"))
+                NoFovy = Convert.ToInt32(entry["flag.nofovy"]);
+
+            VPanAxisX = Convert.ToSingle(entry["vpanaxis.X"]);
+            VPanAxisY = Convert.ToSingle(entry["vpanaxis.Y"]);
+            VPanAxisZ = Convert.ToSingle(entry["vpanaxis.Z"]);
 
             VPanUse = Convert.ToInt32(entry["vpanuse"]);
             UDown = Convert.ToInt32(entry["udown"]);
@@ -115,9 +133,9 @@ namespace MilkyEditor.GalaxyObject
             LOffsetV = Convert.ToSingle(entry["loffsetv"]);
             LOffset = Convert.ToSingle(entry["loffset"]);
 
-            WOffsetX = Convert.ToSingle(entry["woffset.x"]);
-            WOffsetY = Convert.ToSingle(entry["woffset.y"]);
-            WOffsetZ = Convert.ToSingle(entry["woffset.z"]);
+            WOffsetX = Convert.ToSingle(entry["woffset.X"]);
+            WOffsetY = Convert.ToSingle(entry["woffset.Y"]);
+            WOffsetZ = Convert.ToSingle(entry["woffset.Z"]);
 
             CamType = Convert.ToString(entry["camtype"]);
             ID = Convert.ToString(entry["id"]);
@@ -132,6 +150,8 @@ namespace MilkyEditor.GalaxyObject
             try { Convert.ToInt32(Entry[name]); return true; }
             catch { return false; }
         }
+
+        public override string ToString() { return ID; }
 
         Bcsv.Entry Entry;
         int Version, CamEndint, EnableEndErpFrame, GFlagThru, num2, num1;

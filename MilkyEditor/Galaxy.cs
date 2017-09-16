@@ -18,6 +18,7 @@ namespace MilkyEditor
          */
         public Galaxy(string galaxyName, List<string> layers, ExternalFilesystem gameFilesystem)
         {
+            filesystem = gameFilesystem;
             /*
              * Scenario data
              */
@@ -71,6 +72,8 @@ namespace MilkyEditor
             zones = new List<Zone>();
             objects = new List<LevelObject>();
 
+            int curID = 0;
+
             foreach (string layer in layers)
             {
                 string mapObjFile = String.Format("/Stage/jmp/Placement/{0}/ObjInfo", layer);
@@ -98,7 +101,9 @@ namespace MilkyEditor
 
                     Vector3 RotationOffset = new Vector3(xRot, yRot, zRot);
 
-                    zones.Add(new Zone(Convert.ToString(entry["name"]), PositionOffset, RotationOffset, layer, gameFilesystem));
+                    Zone zone = new Zone(Convert.ToString(entry["name"]), PositionOffset, RotationOffset, layer, gameFilesystem, curID);
+                    curID = zone.ReturnUnique();
+                    zones.Add(zone);
                 }
 
                 stageObjBcsv.Close();
@@ -108,7 +113,11 @@ namespace MilkyEditor
                 Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
 
                 foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
-                    objects.Add(new LevelObject(entry, layer));
+                {
+                    LevelObject obj = new LevelObject(entry, layer, curID++);
+                    obj.SetModelExistFlag(gameFilesystem);
+                    objects.Add(obj);
+                }
 
                 mapObjBcsv.Close();
 
@@ -121,7 +130,7 @@ namespace MilkyEditor
                 startingPoints = new List<StartObject>();
 
                 foreach (Bcsv.Entry entry in startObjBcsv.Entries)
-                    startingPoints.Add(new StartObject(entry, layer, galaxyName));
+                    startingPoints.Add(new StartObject(entry, layer, galaxyName, curID++));
 
                 startObjBcsv.Close();
 
@@ -131,7 +140,7 @@ namespace MilkyEditor
                 cameras = new List<CameraObject>();
 
                 foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
-                    cameras.Add(new CameraObject(entry, layer));
+                    cameras.Add(new CameraObject(entry, layer, curID++));
 
                 cameraCubeBcsv.Close();
 
@@ -141,7 +150,7 @@ namespace MilkyEditor
                 Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
 
                 foreach(Bcsv.Entry entry in mapPartsBcsv.Entries)
-                    mapParts.Add(new MapPartsObject(entry, layer));
+                    mapParts.Add(new MapPartsObject(entry, layer, curID++));
 
                 mapPartsBcsv.Close();
 
@@ -151,7 +160,7 @@ namespace MilkyEditor
                 demos = new List<DemoObject>();
 
                 foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
-                    demos.Add(new DemoObject(entry, layer));
+                    demos.Add(new DemoObject(entry, layer, curID++));
 
                 demoInfoBcsv.Close();
 
@@ -168,7 +177,7 @@ namespace MilkyEditor
 
                 // type 0, map
                 foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
-                    areas.Add(new AreaObject(entry, layer, 0));
+                    areas.Add(new AreaObject(entry, layer, 0, curID++));
 
                 mapAreaBcsv.Close();
                 mapArchive.Close();
@@ -184,7 +193,7 @@ namespace MilkyEditor
                         Bcsv designBcsv = new Bcsv(designArchive.OpenFile(areaObjFile));
 
                         foreach (Bcsv.Entry entry in designBcsv.Entries)
-                            areas.Add(new AreaObject(entry, layer, 1));
+                            areas.Add(new AreaObject(entry, layer, 1, curID++));
 
                         designBcsv.Close();
                     }
@@ -203,7 +212,7 @@ namespace MilkyEditor
                         Bcsv soundBcsv = new Bcsv(soundArchive.OpenFile(areaObjFile));
 
                         foreach (Bcsv.Entry entry in soundBcsv.Entries)
-                            areas.Add(new AreaObject(entry, layer, 2));
+                            areas.Add(new AreaObject(entry, layer, 2, curID++));
 
                         soundBcsv.Close();
                     }
@@ -213,7 +222,7 @@ namespace MilkyEditor
                         Bcsv soundObjBcsv = new Bcsv(soundArchive.OpenFile(mapObjFile));
 
                         foreach (Bcsv.Entry entry in soundObjBcsv.Entries)
-                            objects.Add(new LevelObject(entry, layer));
+                            objects.Add(new LevelObject(entry, layer, curID++));
 
                         soundObjBcsv.Close();
                     }
@@ -241,6 +250,14 @@ namespace MilkyEditor
 
             /* BCAM File for cameras */
             Bcsv bcamBcsv = new Bcsv(pathMapArchive.OpenFile("/Stage/camera/CameraParam.bcam"));
+
+            lvlCameras = new List<CameraEntry>();
+
+            foreach (Bcsv.Entry entry in bcamBcsv.Entries)
+                lvlCameras.Add(new CameraEntry(entry));
+
+            bcamBcsv.Close();
+
             pathMapArchive.Close();
 
             gameFilesystem.Close();
@@ -261,5 +278,10 @@ namespace MilkyEditor
         public List<CameraObject> cameras;
         public List<MapPartsObject> mapParts;
         public List<PathObject> paths;
+        public List<CameraEntry> lvlCameras;
+
+        public ExternalFilesystem filesystem;
     }
 }
+
+

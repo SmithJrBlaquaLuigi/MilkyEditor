@@ -14,8 +14,9 @@ namespace MilkyEditor.GalaxyObject
 
         }
 
-        public StartObject(Bcsv.Entry entry, string layer, string zone)
+        public StartObject(Bcsv.Entry entry, string layer, string zone, int curID)
         {
+            uniqueID = curID;
             Layer = layer;
             ZoneName = zone;
 
@@ -44,5 +45,6 @@ namespace MilkyEditor.GalaxyObject
         float X, Y, Z, XRot, YRot, ZRot, XScale, YScale, ZScale;
         string Layer;
         string ZoneName;
+        int uniqueID;
     }
 }

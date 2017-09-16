@@ -109,11 +109,13 @@ namespace MilkyEditor
                 FillObjectTree();
                 FillAreaTree();
                 FillStartTree();
+
+                LoadGL();
             }
             // this means that the selected level is just a zone
             else
             {
-                zone = new Zone(galaxyName, new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), layers[0], gameFilesystem);
+                zone = new Zone(galaxyName, new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), layers[0], gameFilesystem, 0);
 
                 if (zone.lights != null)
                 {
@@ -131,6 +133,8 @@ namespace MilkyEditor
                 FillObjectTree();
                 FillAreaTree();
                 FillStartTree();
+
+                LoadGL();
             }
         }
 
@@ -317,6 +321,22 @@ namespace MilkyEditor
             }
         }
 
+        private void LoadGL()
+        {
+            glViewPanel.Controls.Clear();
+
+            if (isZone)
+            {
+                renderer = new LevelRenderer(zone);
+                glViewPanel.Controls.Add(renderer);
+            }
+            else
+            {
+                renderer = new LevelRenderer(galaxy);
+                glViewPanel.Controls.Add(renderer);
+            }
+        }
+
         private void ScenarioTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             scenarioEditorPanel.Controls.Clear();
@@ -371,6 +391,10 @@ namespace MilkyEditor
 
                 scenarioEditorPanel.Controls.Add(scenarioEditor);
             }
+
+            renderer.Clear();
+
+            LoadGL();
         }
 
         private void LightDataTree_AfterSelect(object sender, TreeViewEventArgs e)
@@ -391,6 +415,7 @@ namespace MilkyEditor
         bool isZone;
         Galaxy galaxy;
         Zone zone;
+        LevelRenderer renderer;
 
         private void pathsPage_Click(object sender, EventArgs e)
         {
