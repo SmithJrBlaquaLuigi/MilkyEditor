@@ -43,5 +43,7 @@ namespace MilkyEditor.GalaxyObject
                 cubeRender.Render(ri);
             }
         }
+
+        public Dictionary<string, Bmd> usedModels = new Dictionary<string, Bmd>();
     }
 }

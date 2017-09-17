@@ -64,21 +64,36 @@ namespace MilkyEditor
         #region
         private void Control_Load(object sender, EventArgs e)
         {
-            MakeCurrent();
+            Context.MakeCurrent(WindowInfo);
 
-            GL.Enable(EnableCap.DepthTest);
-            GL.ClearDepth(1f);
+            MakeCurrent();
 
             GL.FrontFace(FrontFaceDirection.Cw);
 
-            CamRotation = new Vector2(0.0f, 0.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            PickingFrameBuffer = new uint[9];
+            PickingDepth = 0f;
+
+            GL.Viewport(ClientRectangle);
+
+            AspectRatio = Width / Height;
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            Matrix4 projmtx = Matrix4.CreatePerspectiveFieldOfView(k_FOV, AspectRatio, k_zNear, k_zFar);
+            GL.MultMatrix(ref projmtx);
+
+            GL.Enable(EnableCap.DepthTest);
+            GL.ClearDepth(1.0);
+
+            GL.Enable(EnableCap.Normalize);
+
+            CamRotation = new Vector2(0.0f, (float)Math.PI / 8.0f);
             CamTarget = new Vector3(0.0f, 0.0f, 0.0f);
-            CamDistance = 1f;
+            CamDistance = 1.0f;
 
-            renderInfo = new RenderInfo();
-
-            UpdateViewport();
-            UpdateCamera();
+            PixelFactorX = ((2f * (float)Math.Tan(k_FOV / 2f) * AspectRatio) / (Width));
+            PixelFactorY = ((2f * (float)Math.Tan(k_FOV / 2f)) / (Height));
 
             ObjectLists = GL.GenLists(1);
 
@@ -145,6 +160,14 @@ namespace MilkyEditor
             }
             GL.EndList();
 
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+            GL.Enable(EnableCap.AlphaTest);
+            GL.AlphaFunc(AlphaFunction.Greater, 0.0f);
+
+            GL.Enable(EnableCap.Texture2D);
+
             GLLoaded = true;
         }
 
@@ -152,10 +175,38 @@ namespace MilkyEditor
         {
             if (!GLLoaded) return;
 
-            MakeCurrent();
+            Context.MakeCurrent(WindowInfo);
 
+            GL.MatrixMode(MatrixMode.Projection);
+            Matrix4 projmtx = (!OrthView) ? Matrix4.CreatePerspectiveFieldOfView(k_FOV, AspectRatio, k_zNear, k_zFar) :
+                Matrix4.CreateOrthographic(OrthZoom, OrthZoom / AspectRatio, k_zNear, k_zFar);
+            GL.LoadMatrix(ref projmtx);
 
-            GL.DepthMask(true); // ensures that GL.Clear() will successfully clear the buffers
+            /* Fakecolor Rendering */
+            GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref CamMatrix);
+
+            GL.Disable(EnableCap.AlphaTest);
+            GL.Disable(EnableCap.Blend);
+            GL.Disable(EnableCap.Dither);
+            GL.Disable(EnableCap.LineSmooth);
+            GL.Disable(EnableCap.PolygonSmooth);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.Disable(EnableCap.Lighting);
+
+            GL.CallList(ObjectListsPicking);
+
+            GL.Flush();
+            GL.ReadPixels(MouseCoords.X - 1, Height - MouseCoords.Y + 1, 3, 3, PixelFormat.Bgra, PixelType.UnsignedByte, PickingFrameBuffer);
+
+            GL.ReadPixels(MouseCoords.X, Height - MouseCoords.Y, 1, 1, PixelFormat.DepthComponent, PixelType.Float, ref PickingDepth);
+            PickingDepth = -(k_zFar * k_zNear / (PickingDepth * (k_zFar - k_zNear) - k_zFar));
+
+            /* Real Rendering */
+            GL.DepthMask(true);
 
             GL.ClearColor(0f, 0f, 0.125f, 1f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

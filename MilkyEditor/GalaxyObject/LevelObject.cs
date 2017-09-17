@@ -83,17 +83,25 @@ namespace MilkyEditor.GalaxyObject
 
             if (usesModel && fs != null)
             {
-                string objFile = String.Format("/ObjectData/{0}.arc", Name);
-                string bmdFile = String.Format("/{0}/{0}.bdl", Name);
-
-                RarcFilesystem rarc = new RarcFilesystem(fs.OpenFile(objFile));
-                Bmd bmd = new Bmd(rarc.OpenFile(bmdFile));
-
                 GL.Scale(XScale, YScale, ZScale);
-                DrawBDL(bmd);
 
-                rarc.Close();
-                bmd.Close();
+                if (!usedModels.ContainsKey(Name))
+                {
+                    string objFile = String.Format("/ObjectData/{0}.arc", Name);
+                    string bmdFile = String.Format("/{0}/{0}.bdl", Name);
+
+                    RarcFilesystem rarc = new RarcFilesystem(fs.OpenFile(objFile));
+                    Bmd bmd = new Bmd(rarc.OpenFile(bmdFile));
+
+                    DrawBDL(bmd, mode);
+
+                    usedModels.Add(Name, bmd);
+
+                    rarc.Close();
+                    bmd.Close();
+                }
+                else
+                    DrawBDL(usedModels[Name], mode);
             }
             else
             {
