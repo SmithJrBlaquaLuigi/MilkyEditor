@@ -71,6 +71,11 @@ namespace MilkyEditor
 
             zones = new List<Zone>();
             objects = new List<LevelObject>();
+            cameras = new List<CameraObject>();
+            startingPoints = new List<StartObject>();
+            mapParts = new List<MapPartsObject>();
+            demos = new List<DemoObject>();
+            areas = new List<AreaObject>();
 
             int curID = 0;
 
@@ -127,8 +132,6 @@ namespace MilkyEditor
 
                 Bcsv startObjBcsv = new Bcsv(mapArchive.OpenFile(startingObjFile));
 
-                startingPoints = new List<StartObject>();
-
                 foreach (Bcsv.Entry entry in startObjBcsv.Entries)
                     startingPoints.Add(new StartObject(entry, layer, galaxyName, curID++));
 
@@ -137,16 +140,12 @@ namespace MilkyEditor
                 /* Camera Areas */
                 Bcsv cameraCubeBcsv = new Bcsv(mapArchive.OpenFile(cameraAreaFile));
 
-                cameras = new List<CameraObject>();
-
                 foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
                     cameras.Add(new CameraObject(entry, layer, curID++));
 
                 cameraCubeBcsv.Close();
 
                 /* Map Parts */
-                mapParts = new List<MapPartsObject>();
-
                 Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
 
                 foreach(Bcsv.Entry entry in mapPartsBcsv.Entries)
@@ -156,8 +155,6 @@ namespace MilkyEditor
 
                 /* Demo Objects */
                 Bcsv demoInfoBcsv = new Bcsv(mapArchive.OpenFile(demoObjFile));
-
-                demos = new List<DemoObject>();
 
                 foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
                     demos.Add(new DemoObject(entry, layer, curID++));
@@ -172,8 +169,6 @@ namespace MilkyEditor
                  */
 
                 Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
-
-                areas = new List<AreaObject>();
 
                 // type 0, map
                 foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)

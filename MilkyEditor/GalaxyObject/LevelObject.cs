@@ -85,7 +85,12 @@ namespace MilkyEditor.GalaxyObject
             {
                 GL.Scale(XScale, YScale, ZScale);
 
-                if (!usedModels.ContainsKey(Name))
+                if (illegalNames.Contains(Name))
+                {
+                    GL.Scale(1f, 1f, 1f);
+                    DrawCube(0f, 1f, 0f, true, true, false, mode);
+                }
+                else if (!usedModels.ContainsKey(Name))
                 {
                     string objFile = String.Format("/ObjectData/{0}.arc", Name);
                     string bmdFile = String.Format("/{0}/{0}.bdl", Name);
@@ -128,6 +133,12 @@ namespace MilkyEditor.GalaxyObject
                 rarc.Close();
             }
         }
+
+        public List<string> illegalNames = new List<string>
+        {
+            "ElectricRailMoving",
+            "PeachCastleNightPlanet"
+        };
 
         string Name;
         int ID;

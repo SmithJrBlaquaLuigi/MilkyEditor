@@ -29,25 +29,27 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelEditorForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Map");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Light");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Sound");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Cameras");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Demo");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Debug");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("GeneralPos");
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Map");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Light");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Sound");
+            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Cameras");
+            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Demo");
+            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("Debug");
+            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("GeneralPos");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.introCameraEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.addObjectDropDown = new System.Windows.Forms.ToolStripDropDownButton();
             this.deleteObjectButton = new System.Windows.Forms.ToolStripButton();
             this.duplicateObjectButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.levelLoadingProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.bottomStatusStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.leftTabPanel = new System.Windows.Forms.Panel();
             this.galaxyControl = new System.Windows.Forms.TabControl();
@@ -77,8 +79,8 @@
             this.miscPage = new System.Windows.Forms.TabPage();
             this.miscTree = new System.Windows.Forms.TreeView();
             this.glViewPanel = new System.Windows.Forms.Panel();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.introCameraEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layersComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -134,13 +136,30 @@
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.introCameraEditorToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // introCameraEditorToolStripMenuItem
+            // 
+            this.introCameraEditorToolStripMenuItem.Name = "introCameraEditorToolStripMenuItem";
+            this.introCameraEditorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.introCameraEditorToolStripMenuItem.Text = "Intro Camera Editor";
+            this.introCameraEditorToolStripMenuItem.Click += new System.EventHandler(this.introCameraEditorToolStripMenuItem_Click);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addObjectDropDown,
             this.deleteObjectButton,
             this.duplicateObjectButton,
-            this.toolStripSeparator1});
+            this.toolStripSeparator1,
+            this.toolStripLabel1,
+            this.layersComboBox});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -183,7 +202,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
+            this.levelLoadingProgress,
             this.bottomStatusStripLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 364);
             this.statusStrip1.Name = "statusStrip1";
@@ -191,10 +210,10 @@
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripProgressBar1
+            // levelLoadingProgress
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.levelLoadingProgress.Name = "levelLoadingProgress";
+            this.levelLoadingProgress.Size = new System.Drawing.Size(100, 16);
             // 
             // bottomStatusStripLabel
             // 
@@ -389,19 +408,19 @@
             this.areasTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.areasTreeView.Location = new System.Drawing.Point(3, 3);
             this.areasTreeView.Name = "areasTreeView";
-            treeNode1.Name = "MapNode";
-            treeNode1.Text = "Map";
-            treeNode2.Name = "LightNode";
-            treeNode2.Text = "Light";
-            treeNode3.Name = "SoundNode";
-            treeNode3.Text = "Sound";
-            treeNode4.Name = "cameraNode";
-            treeNode4.Text = "Cameras";
+            treeNode29.Name = "MapNode";
+            treeNode29.Text = "Map";
+            treeNode30.Name = "LightNode";
+            treeNode30.Text = "Light";
+            treeNode31.Name = "SoundNode";
+            treeNode31.Text = "Sound";
+            treeNode32.Name = "cameraNode";
+            treeNode32.Text = "Cameras";
             this.areasTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
+            treeNode29,
+            treeNode30,
+            treeNode31,
+            treeNode32});
             this.areasTreeView.Size = new System.Drawing.Size(284, 278);
             this.areasTreeView.TabIndex = 0;
             // 
@@ -498,16 +517,16 @@
             this.miscTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.miscTree.Location = new System.Drawing.Point(3, 3);
             this.miscTree.Name = "miscTree";
-            treeNode5.Name = "demoNode";
-            treeNode5.Text = "Demo";
-            treeNode6.Name = "debugNode";
-            treeNode6.Text = "Debug";
-            treeNode7.Name = "genPosNode";
-            treeNode7.Text = "GeneralPos";
+            treeNode33.Name = "demoNode";
+            treeNode33.Text = "Demo";
+            treeNode34.Name = "debugNode";
+            treeNode34.Text = "Debug";
+            treeNode35.Name = "genPosNode";
+            treeNode35.Text = "GeneralPos";
             this.miscTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6,
-            treeNode7});
+            treeNode33,
+            treeNode34,
+            treeNode35});
             this.miscTree.Size = new System.Drawing.Size(284, 278);
             this.miscTree.TabIndex = 0;
             // 
@@ -522,20 +541,19 @@
             this.glViewPanel.Size = new System.Drawing.Size(516, 310);
             this.glViewPanel.TabIndex = 4;
             // 
-            // toolsToolStripMenuItem
+            // layersComboBox
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.introCameraEditorToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            this.layersComboBox.Enabled = false;
+            this.layersComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.layersComboBox.Name = "layersComboBox";
+            this.layersComboBox.Size = new System.Drawing.Size(121, 23);
+            this.layersComboBox.SelectedIndexChanged += new System.EventHandler(this.layersComboBox_SelectedIndexChanged);
             // 
-            // introCameraEditorToolStripMenuItem
+            // toolStripLabel1
             // 
-            this.introCameraEditorToolStripMenuItem.Name = "introCameraEditorToolStripMenuItem";
-            this.introCameraEditorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.introCameraEditorToolStripMenuItem.Text = "Intro Camera Editor";
-            this.introCameraEditorToolStripMenuItem.Click += new System.EventHandler(this.introCameraEditorToolStripMenuItem_Click);
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(81, 15);
+            this.toolStripLabel1.Text = "Current Layer:";
             // 
             // LevelEditorForm
             // 
@@ -589,8 +607,6 @@
         private System.Windows.Forms.ToolStripButton duplicateObjectButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private System.Windows.Forms.ToolStripStatusLabel bottomStatusStripLabel;
         private System.Windows.Forms.Panel leftTabPanel;
         private System.Windows.Forms.Panel glViewPanel;
         private System.Windows.Forms.TabControl galaxyControl;
@@ -621,5 +637,9 @@
         private System.Windows.Forms.TreeView camerasTree;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem introCameraEditorToolStripMenuItem;
+        public System.Windows.Forms.ToolStripProgressBar levelLoadingProgress;
+        public System.Windows.Forms.ToolStripStatusLabel bottomStatusStripLabel;
+        private System.Windows.Forms.ToolStripComboBox layersComboBox;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }

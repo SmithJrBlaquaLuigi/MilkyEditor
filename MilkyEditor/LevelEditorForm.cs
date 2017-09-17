@@ -115,7 +115,15 @@ namespace MilkyEditor
             // this means that the selected level is just a zone
             else
             {
+                layersComboBox.Enabled = true;
+
                 zone = new Zone(galaxyName, new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), layers[0], gameFilesystem, 0);
+
+                foreach (string layer in zone.gotlayers)
+                    layersComboBox.Items.Add(layer);
+
+                // Common
+                layersComboBox.SelectedIndex = 0;
 
                 if (zone.lights != null)
                 {
@@ -136,6 +144,10 @@ namespace MilkyEditor
 
                 LoadGL();
             }
+        }
+
+        public LevelEditorForm()
+        {
         }
 
         private void FillObjectTree()
@@ -428,6 +440,24 @@ namespace MilkyEditor
 
             // HARDCODED :D
             CANM canm = new CANM(rarc.OpenFile("/Stage/camera/StartScenario1.canm"));
+        }
+
+        private void levelLoadingWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void layersComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            zone = null;
+
+            zone = new Zone(galaxyName, new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), layersComboBox.SelectedItem.ToString(), gameFilesystem, 0);
+
+            FillObjectTree();
+            FillAreaTree();
+            FillStartTree();
+
+            LoadGL();
         }
     }
 }

@@ -60,6 +60,15 @@ namespace MilkyEditor
 
             RarcFilesystem mapArchive = new RarcFilesystem(gameFilesystem.OpenFile(mapFile));
 
+            gotlayers = new List<string>();
+
+            objects = new List<LevelObject>();
+            startingPoints = new List<StartObject>();
+            cameras = new List<CameraObject>();
+            demos = new List<DemoObject>();
+            mapParts = new List<MapPartsObject>();
+            areas = new List<AreaObject>();
+
             foreach (string cur_layer in layers)
             {
 
@@ -78,9 +87,9 @@ namespace MilkyEditor
                 string cameraAreaFile = String.Format("/Stage/jmp/Placement/{0}/CameraCubeInfo", layer);
                 string stageInfoFile = String.Format("/Stage/jmp/Placement/{0}/StageObjInfo", layer);
 
-                Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
+                gotlayers.AddRange(mapArchive.GetDirectories("/Stage/jmp/Placement"));
 
-                objects = new List<LevelObject>();
+                Bcsv mapObjBcsv = new Bcsv(mapArchive.OpenFile(mapObjFile));
 
                 foreach (Bcsv.Entry entry in mapObjBcsv.Entries)
                 {
@@ -93,8 +102,6 @@ namespace MilkyEditor
 
                 Bcsv startObjBcsv = new Bcsv(mapArchive.OpenFile(startingObjFile));
 
-                startingPoints = new List<StartObject>();
-
                 foreach (Bcsv.Entry entry in startObjBcsv.Entries)
                     startingPoints.Add(new StartObject(entry, layer, name, id++));
 
@@ -103,7 +110,6 @@ namespace MilkyEditor
                 /* Camera Areas */
                 Bcsv cameraCubeBcsv = new Bcsv(mapArchive.OpenFile(cameraAreaFile));
 
-                cameras = new List<CameraObject>();
 
                 foreach (Bcsv.Entry entry in cameraCubeBcsv.Entries)
                     cameras.Add(new CameraObject(entry, layer, id++));
@@ -111,8 +117,6 @@ namespace MilkyEditor
                 cameraCubeBcsv.Close();
 
                 /* Map Parts */
-                mapParts = new List<MapPartsObject>();
-
                 Bcsv mapPartsBcsv = new Bcsv(mapArchive.OpenFile(mapPartsFile));
 
                 foreach (Bcsv.Entry entry in mapPartsBcsv.Entries)
@@ -122,8 +126,6 @@ namespace MilkyEditor
 
                 /* Demo Objects */
                 Bcsv demoInfoBcsv = new Bcsv(mapArchive.OpenFile(demoObjFile));
-
-                demos = new List<DemoObject>();
 
                 foreach (Bcsv.Entry entry in demoInfoBcsv.Entries)
                     demos.Add(new DemoObject(entry, layer, id++));
@@ -138,8 +140,6 @@ namespace MilkyEditor
                  */
 
                 Bcsv mapAreaBcsv = new Bcsv(mapArchive.OpenFile(areaObjFile));
-
-                areas = new List<AreaObject>();
 
                 // type 0, map
                 foreach (Bcsv.Entry entry in mapAreaBcsv.Entries)
@@ -200,6 +200,10 @@ namespace MilkyEditor
         }
 
         public int ReturnUnique() { return id; }
+
+        public List<string> ReturnLayers() { return gotlayers; }
+
+        public List<string> gotlayers;
 
         public List<Light> lights;
         public List<LevelObject> objects;
