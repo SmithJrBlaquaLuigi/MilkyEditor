@@ -183,7 +183,7 @@ namespace MilkyEditor
             GL.LoadMatrix(ref projmtx);
 
             /* Fakecolor Rendering */
-            GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            /*GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             GL.MatrixMode(MatrixMode.Modelview);
@@ -203,7 +203,7 @@ namespace MilkyEditor
             GL.ReadPixels(MouseCoords.X - 1, Height - MouseCoords.Y + 1, 3, 3, PixelFormat.Bgra, PixelType.UnsignedByte, PickingFrameBuffer);
 
             GL.ReadPixels(MouseCoords.X, Height - MouseCoords.Y, 1, 1, PixelFormat.DepthComponent, PixelType.Float, ref PickingDepth);
-            PickingDepth = -(k_zFar * k_zNear / (PickingDepth * (k_zFar - k_zNear) - k_zFar));
+            PickingDepth = -(k_zFar * k_zNear / (PickingDepth * (k_zFar - k_zNear) - k_zFar));*/
 
             /* Real Rendering */
             GL.DepthMask(true);
@@ -216,8 +216,10 @@ namespace MilkyEditor
 
             GL.Disable(EnableCap.Texture2D);
 
-            GL.CallList(ObjectLists);
-            GL.CallList(ObjectListsTrans);
+            //GL.CallList(ObjectLists);
+            //GL.CallList(ObjectListsTrans);
+
+            GL.CallList(ObjectListsPicking);
 
             GL.Begin(PrimitiveType.Lines);
             GL.Color4(1f, 0f, 0f, 1f);
@@ -375,9 +377,9 @@ namespace MilkyEditor
         private const float k_zFar = 1000f;
         private const float k_FOV = (float)(70f * Math.PI) / 180f;
 
-        private Vector2 CamRotation;
-        private Vector3 CamTarget;
-        private float CamDistance;
+        public Vector2 CamRotation;
+        public Vector3 CamTarget;
+        public float CamDistance;
         private float AspectRatio;
         private float PixelFactorX, PixelFactorY;
         private Vector3 CamPosition;

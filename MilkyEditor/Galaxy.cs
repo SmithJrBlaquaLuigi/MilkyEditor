@@ -256,6 +256,8 @@ namespace MilkyEditor
             pathMapArchive.Close();
 
             gameFilesystem.Close();
+
+            finalID = curID;
         }
 
         public void Clear()
@@ -276,6 +278,8 @@ namespace MilkyEditor
         public List<CameraEntry> lvlCameras;
 
         public ExternalFilesystem filesystem;
+
+        public int finalID;
     }
 }
 

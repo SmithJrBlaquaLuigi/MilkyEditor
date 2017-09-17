@@ -337,6 +337,7 @@ namespace MilkyEditor
         {
             glViewPanel.Controls.Clear();
 
+            bottomStatusStripLabel.Text = "Rendering Galaxy/Zone, please wait...";
             if (isZone)
             {
                 renderer = new LevelRenderer(zone);
@@ -347,6 +348,8 @@ namespace MilkyEditor
                 renderer = new LevelRenderer(galaxy);
                 glViewPanel.Controls.Add(renderer);
             }
+
+            bottomStatusStripLabel.Text = "Done.";
         }
 
         private void ScenarioTreeView_AfterSelect(object sender, TreeViewEventArgs e)

@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace MilkyEditor.GalaxyObject
 
         public LevelObject(Bcsv.Entry entry, string layer, int id)
         {
+            uniqueID = id;
             Layer = layer;
 
             Name = Convert.ToString(entry["name"]);
@@ -72,19 +74,20 @@ namespace MilkyEditor.GalaxyObject
 
         public void Render(RenderMode mode, Vector3 posBias, Vector3 rotBias, ExternalFilesystem fs = null)
         {
+            if (mode == RenderMode.Picking)
+                GL.Color4(Color.FromArgb(uniqueID));
+
             Vector3 pos = new Vector3(X, Y, Z);
             Vector3 finalPos = pos + posBias;
 
             GL.PushMatrix();
             GL.Translate(finalPos);
-            GL.Rotate(XRot + rotBias.X, 1f, 0f, 0f);
-            GL.Rotate(YRot + rotBias.Y, 0f, 1f, 0f);
-            GL.Rotate(ZRot + rotBias.Z, 0f, 0f, 1f);
+            GL.Rotate(XRot, 1f, 0f, 0f);
+            GL.Rotate(YRot, 0f, 1f, 0f);
+            GL.Rotate(ZRot, 0f, 0f, 1f);
 
             if (usesModel && fs != null)
-            {
-                GL.Scale(XScale, YScale, ZScale);
-
+            { 
                 if (illegalNames.Contains(Name))
                 {
                     GL.Scale(1f, 1f, 1f);
@@ -92,6 +95,8 @@ namespace MilkyEditor.GalaxyObject
                 }
                 else if (!usedModels.ContainsKey(Name))
                 {
+                    GL.Scale(XScale, YScale, ZScale);
+
                     string objFile = String.Format("/ObjectData/{0}.arc", Name);
                     string bmdFile = String.Format("/{0}/{0}.bdl", Name);
 
@@ -150,7 +155,7 @@ namespace MilkyEditor.GalaxyObject
         short ShapeModelNo, PathID, ClippingID, GroupID, DemoGroupID, MapPartsID, ObjID, GeneratorID;
 
         string Layer;
-        int uniqueID;
+        public int uniqueID;
         bool usesModel;
     }
 }
